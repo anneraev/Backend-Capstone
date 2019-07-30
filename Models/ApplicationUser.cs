@@ -16,16 +16,12 @@ namespace backendcapstone.Models
         public ApplicationUser() { }
 
         [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
+        [Display(Name = "User Name")]
+        public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-
-        [Required]
-        [Display(Name = "Street Address")]
-        public string StreetAddress { get; set; }
+        public string AvatarPath { get; set; }
+        public string WebSite { get; set; }
+        public string Github { get; set; }
 
         /*
             Which resources are related to the User? The code
