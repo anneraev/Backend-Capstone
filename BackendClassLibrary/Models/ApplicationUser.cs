@@ -18,7 +18,6 @@ namespace BackendClassLibrary.Models
         [Required]
         [Display(Name = "User Name")]
         public string Name { get; set; }
-
         public string AvatarPath { get; set; }
         public string WebSite { get; set; }
         public string Github { get; set; }

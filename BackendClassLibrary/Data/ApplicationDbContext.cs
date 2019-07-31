@@ -99,16 +99,104 @@ namespace BackendClassLibrary.Data
                     PluginId = 1,
                     Title = "YEP Battle System - CTB",
                     UserId = user.Id,
+                    EngineId = 1,
+                    PluginTypeId = 1,
                 },
                 new Plugin()
                 {
                     PluginId = 2,
                     Title = "Mog Status Menu",
                     UserId = user2.Id,
+                    EngineId = 1,
+                    PluginTypeId = 2,
+                },
+                new Plugin()
+                {
+                    PluginId = 3,
+                    Title = "Mog Save Menu",
+                    UserId = user2.Id,
+                    EngineId = 1,
+                    PluginTypeId = 2,
+                },
+                new Plugin()
+                {
+                    PluginId = 3,
+                    Title = "Mog Area Target",
+                    UserId = user2.Id,
+                    EngineId = 1,
+                    PluginTypeId = 1,
+                },
+                new Plugin()
+                {
+                    PluginId = 4,
+                    Title = "Game Maker Start Menu",
+                    UserId = user.Id,
+                    EngineId = 2,
+                    PluginTypeId = 2,
                 }
-            ); ;
+            );
 
+            modelBuilder.Entity<Version>().HasData(
+                new Version()
+                {
+                    VersionId = 1,
+                    Name = "1.1",
+                    PluginId = 1,
+                },
+                new Version()
+                {
+                    VersionId = 2,
+                    Name = "1.55",
+                    PluginId = 1,
+                },
+                new Version()
+                {
+                    VersionId = 3,
+                    Name = "0.2Beta",
+                    PluginId = 2,
+                },
+                new Version()
+                {
+                    VersionId = 4,
+                    Name = "Beta",
+                    PluginId = 3,
+                },
+                new Version()
+                {
+                    VersionId = 5,
+                    Name = "Final",
+                    PluginId = 3,
+                },
+                new Version()
+                {
+                    VersionId = 6,
+                    Name = "42",
+                    PluginId = 4,
+                }
+            );
 
+            modelBuilder.Entity<UserVersion>().HasData(
+                //test case for when user has a previous version and the latest.
+                new UserVersion()
+                {
+                    UserVersionId = 1,
+                    UserId = user.Id,
+                    VersionId = 1,
+                },
+                new UserVersion()
+                {
+                    UserVersionId = 2,
+                    UserId = user.Id,
+                    VersionId = 2,
+                },
+                //test case for when user only has an outdated version
+                new UserVersion()
+                {
+                    UserVersionId = 3,
+                    UserId = user2.Id,
+                    VersionId = 4,
+                }
+                ); 
         }
     }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +18,7 @@ namespace BackendClassLibrary.Models
         [Required]
         public string UserId { get; set; }
         [Required]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser Author { get; set; }
         [Required]
         [ForeignKey("Engine")]
         public int EngineId { get; set; }
