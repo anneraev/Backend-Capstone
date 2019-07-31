@@ -13,9 +13,17 @@ namespace BackendClassLibrary.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+
+        public ApplicationDbContext()
+        { }
+
+        //public override void OnConfiguring(DbContextOptionsBuilder OptionsBuilder)
+        //{
+        //    OptionsBuilder.UseSqlServer("Server=localhost\\SQLExpress;Database=RPGMPlugins;Trusted_Connection=True;");
+        //}
 
         //Database Set. a list of the models/objects derriving from that database.
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -28,6 +36,10 @@ namespace BackendClassLibrary.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Version>().HasMany(v => v.UserVersions).WithOne(x => x.Version).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ApplicationUser>().HasMany(v => v.UserVersions).WithOne(x => x.User).OnDelete(DeleteBehavior.Restrict);
 
             // Create a new user for Identity Framework
             ApplicationUser user = new ApplicationUser
@@ -69,12 +81,14 @@ namespace BackendClassLibrary.Data
                 new Engine()
                 {
                     EngineId = 1,
-                    Title = "RPG Maker MV"
+                    Title = "RPG Maker MV",
+                    About = "With tools for managing database, a javascript code base, and the ability to deploy to Mac, PC, and Mobile! With RPG Maker MV, almost anyone (even a child) can make a game!"
                 },
                 new Engine()
                 {
                     EngineId = 2,
-                    Title = "Game Maker"
+                    Title = "Game Maker",
+                    About = "Game Maker makes games!"
                 }
             );
 
@@ -120,7 +134,7 @@ namespace BackendClassLibrary.Data
                 },
                 new Plugin()
                 {
-                    PluginId = 3,
+                    PluginId = 4,
                     Title = "Mog Area Target",
                     UserId = user2.Id,
                     EngineId = 1,
@@ -128,7 +142,7 @@ namespace BackendClassLibrary.Data
                 },
                 new Plugin()
                 {
-                    PluginId = 4,
+                    PluginId = 5,
                     Title = "Game Maker Start Menu",
                     UserId = user.Id,
                     EngineId = 2,
@@ -142,36 +156,42 @@ namespace BackendClassLibrary.Data
                     VersionId = 1,
                     Name = "1.1",
                     PluginId = 1,
+                    Iteration = 1,
                 },
                 new Version()
                 {
                     VersionId = 2,
                     Name = "1.55",
                     PluginId = 1,
+                    Iteration = 2,
                 },
                 new Version()
                 {
                     VersionId = 3,
                     Name = "0.2Beta",
                     PluginId = 2,
+                    Iteration = 1,
                 },
                 new Version()
                 {
                     VersionId = 4,
                     Name = "Beta",
                     PluginId = 3,
+                    Iteration = 1,
                 },
                 new Version()
                 {
                     VersionId = 5,
                     Name = "Final",
                     PluginId = 3,
+                    Iteration = 2,
                 },
                 new Version()
                 {
                     VersionId = 6,
                     Name = "42",
                     PluginId = 4,
+                    Iteration = 1,
                 }
             );
 
