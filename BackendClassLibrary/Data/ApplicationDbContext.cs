@@ -1,12 +1,13 @@
-﻿using backendcapstone.Models;
+﻿using BackendClassLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Version = backendcapstone.Models.Version;
+using Version = BackendClassLibrary.Models.Version;
 
-namespace backendcapstone.Data
+namespace BackendClassLibrary.Data
+
 {
     public class ApplicationDbContext {
 
