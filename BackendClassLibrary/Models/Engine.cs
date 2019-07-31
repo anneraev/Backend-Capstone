@@ -12,6 +12,7 @@ namespace BackendClassLibrary.Models
         [Key]
         public int EngineId { get; set; }
         [Required]
+        public string Title { get; set; }
         public string Language { get; set; }
         [Required]
         public string About { get; set; }
