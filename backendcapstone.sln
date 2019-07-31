@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "backendcapstone", "backendcapstone.csproj", "{07D0A221-FCB6-43D8-94F8-B07698ED1F13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendClassLibrary", "BackendClassLibrary\BackendClassLibrary.csproj", "{9427555E-4D53-4741-9F27-A3BC6D82C758}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendClassLibrary", "BackendClassLibrary\BackendClassLibrary.csproj", "{77D27CAA-D656-459B-91BE-83E82BD22A65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{07D0A221-FCB6-43D8-94F8-B07698ED1F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07D0A221-FCB6-43D8-94F8-B07698ED1F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07D0A221-FCB6-43D8-94F8-B07698ED1F13}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9427555E-4D53-4741-9F27-A3BC6D82C758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9427555E-4D53-4741-9F27-A3BC6D82C758}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9427555E-4D53-4741-9F27-A3BC6D82C758}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9427555E-4D53-4741-9F27-A3BC6D82C758}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77D27CAA-D656-459B-91BE-83E82BD22A65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77D27CAA-D656-459B-91BE-83E82BD22A65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77D27CAA-D656-459B-91BE-83E82BD22A65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77D27CAA-D656-459B-91BE-83E82BD22A65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
