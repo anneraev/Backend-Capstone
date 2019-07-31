@@ -22,6 +22,7 @@ namespace BackendClassLibrary.Models
         public string AvatarPath { get; set; }
         public string WebSite { get; set; }
         public string Github { get; set; }
+        public bool IsAdmin { get; set; }
 
         /*
             Which resources are related to the User? The code

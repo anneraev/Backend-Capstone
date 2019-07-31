@@ -34,6 +34,7 @@ namespace BackendClassLibrary.Data
             {
                 Name = "admin",
                 UserName = "admin@admin.com",
+                IsAdmin = true,
                 NormalizedUserName = "ADMIN@ADMIN.COM",
                 Email = "admin@admin.com",
                 NormalizedEmail = "ADMIN@ADMIN.COM",
@@ -45,6 +46,23 @@ namespace BackendClassLibrary.Data
             var passwordHash = new PasswordHasher<ApplicationUser>();
             user.PasswordHash = passwordHash.HashPassword(user, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(user);
+
+            ApplicationUser user2 = new ApplicationUser
+            {
+                Name = "notadmin",
+                UserName = "notadmin@notadmin.com",
+                NormalizedUserName = "NOTADMIN@NOTADMIN.COM",
+                Email = "notadmin@notadmin.com",
+                NormalizedEmail = "NOTADMIN@NOTADMIN.COM",
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                SecurityStamp = "8f434309-a4d9-48e9-9ebb-8803db794577",
+                Id = "10000000-ffff-ffff-ffff-ffffffffffff"
+            };
+            var passwordHash2 = new PasswordHasher<ApplicationUser>();
+            user.PasswordHash = passwordHash2.HashPassword(user2, "NotAdmin8*");
+            modelBuilder.Entity<ApplicationUser>().HasData(user2);
+
 
             // Create two engines
             modelBuilder.Entity<Engine>().HasData(
@@ -74,6 +92,21 @@ namespace BackendClassLibrary.Data
                 }
             );
 
+            // Create two plugins
+            modelBuilder.Entity<Plugin>().HasData(
+                new Plugin()
+                {
+                    PluginId = 1,
+                    Title = "YEP Battle System - CTB",
+                    UserId = user.Id,
+                },
+                new Plugin()
+                {
+                    PluginId = 2,
+                    Title = "Mog Status Menu",
+                    UserId = user2.Id,
+                }
+            ); ;
 
 
         }
