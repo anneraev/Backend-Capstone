@@ -41,12 +41,11 @@ namespace PluginSleuth.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     AvatarPath = table.Column<string>(nullable: true),
                     WebSite = table.Column<string>(nullable: true),
                     Github = table.Column<string>(nullable: true),
-                    IsAdmin = table.Column<bool>(nullable: true)
+                    IsAdmin = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -278,11 +277,11 @@ namespace PluginSleuth.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "AvatarPath", "Github", "IsAdmin", "Name", "WebSite" },
+                columns: new[] { "Id", "AccessFailedCount", "AvatarPath", "ConcurrencyStamp", "Email", "EmailConfirmed", "Github", "IsAdmin", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "WebSite" },
                 values: new object[,]
                 {
-                    { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "788a2f04-806e-429a-a7c8-e604f8ce4059", "ApplicationUser", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEHlXAFJJKtmrzc6tTEk4iABXIPpXnJpfZO9NmV5cV1CbjKq34HrqtwMFDveCS+CZSQ==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com", null, null, true, "admin", null },
-                    { "10000000-ffff-ffff-ffff-ffffffffffff", 0, "b9cf10c8-73c3-4fcc-b5ed-8a28ab9ff196", "ApplicationUser", "notadmin@notadmin.com", true, false, null, "NOTADMIN@NOTADMIN.COM", "NOTADMIN@NOTADMIN.COM", null, null, false, "8f434309-a4d9-48e9-9ebb-8803db794577", false, "notadmin@notadmin.com", null, null, false, "notadmin", null }
+                    { "00000000-ffff-ffff-ffff-ffffffffffff", 0, null, "f9ff561f-b7f8-4c05-83cc-fbbe93d2578d", "admin@admin.com", true, null, true, false, null, "admin", "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEPOtRKmmQDTjufFxhaYOGKmzSvmz7idUBEM4u8sK9veiPPolYRGn5NpI0BJbFamtGA==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com", null },
+                    { "10000000-ffff-ffff-ffff-ffffffffffff", 0, null, "8207de12-45b7-40bc-bc17-457612ab2748", "notadmin@notadmin.com", true, null, false, false, null, "notadmin", "NOTADMIN@NOTADMIN.COM", "NOTADMIN@NOTADMIN.COM", "AQAAAAEAACcQAAAAEHZNTNmRfJwYbviBav32WvB9EXBl/P1Q6pgoXkPFXe9WwaJ2nIvu7pGTxEN23ntFcg==", null, false, "8f434309-a4d9-48e9-9ebb-8803db794577", false, "notadmin@notadmin.com", null }
                 });
 
             migrationBuilder.InsertData(
