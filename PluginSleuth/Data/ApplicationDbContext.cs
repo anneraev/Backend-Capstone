@@ -9,7 +9,7 @@ using Version = PluginSleuth.Models.Version;
 
 namespace PluginSleuth.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -62,7 +62,7 @@ namespace PluginSleuth.Data
                 Id = "10000000-ffff-ffff-ffff-ffffffffffff"
             };
             var passwordHash2 = new PasswordHasher<ApplicationUser>();
-            user.PasswordHash = passwordHash2.HashPassword(user2, "NotAdmin8*");
+            user2.PasswordHash = passwordHash2.HashPassword(user2, "NotAdmin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(user2);
 
 
