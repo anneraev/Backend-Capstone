@@ -14,23 +14,27 @@ export class PluginList extends Component {
       });
   }
 
-  static renderForecastsTable (plugins) {
+  //render a list of plugins in a table with their corresponding title, author, category and engine.
+
+  static renderPluginTable (plugins) {
     console.log(plugins);
     return (
       <table className='table table-striped'>
         <thead>
           <tr>
             <th>Title</th>
-            <th>UserId</th>
-            <th>EngineId</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Engine</th>
           </tr>
         </thead>
         <tbody>
           {plugins.map(p =>
             <tr key={p.pluginId}>
               <td>{p.title}</td>
-              <td>{p.userId}</td>
-              <td>{p.engineId}</td>
+              <td>{p.pluginType.name}</td>
+              <td>{p.user.name}</td>
+              <td>{p.engine.title}</td>
             </tr>
           )}
         </tbody>
@@ -41,7 +45,7 @@ export class PluginList extends Component {
   render () {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : PluginList.renderForecastsTable(this.state.plugins);
+      : PluginList.renderPluginTable(this.state.plugins);
 
     return (
       <div>

@@ -25,7 +25,10 @@ namespace backendcapstone.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Plugin>>> GetPlugins()
         {
-            return await _context.Plugins.ToListAsync();
+            //get list of plugins w/user
+            List<Plugin> plugins = await _context.Plugins.Include(p => p.User).Include(p => p.Engine).Include(p => p.PluginType).ToListAsync();
+            return plugins;
+
         }
 
         // GET: api/Plugins/5

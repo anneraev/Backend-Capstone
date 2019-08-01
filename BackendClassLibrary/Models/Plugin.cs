@@ -27,6 +27,7 @@ namespace BackendClassLibrary.Models
         [Required]
         [ForeignKey("PluginType")]
         public int PluginTypeId { get; set; }
+        public PluginType PluginType { get; set;  }
 
         //0=No, 1=PaidCommercial, 3=FreeCommercial
         public int CommercialUse { get; set; }
