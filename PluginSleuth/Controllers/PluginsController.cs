@@ -35,8 +35,27 @@ namespace PluginSleuth.Controllers
             ModelState.Remove("UserId");
             ModelState.Remove("User");
 
-            var plugins = await _context.Plugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).Where(p => p.UserId == currentUser.Id).ToListAsync();
-            return View(plugins);
+            //get a list of plugins, filtered by the current user Id.
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var plugins = _context.Plugins.Where(p => p.UserId == currentUser.Id);
+
+            int count = plugins.Count();
+
+
+            if (count == 0)
+            {
+                return NotFound();
+            }
+            else
+            {
+                await plugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToListAsync();
+                return View(plugins);
+            }
         }
 
         // GET: Plugins/Details/5
