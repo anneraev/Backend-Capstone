@@ -29,6 +29,9 @@ namespace PluginSleuth.Controllers
         // GET: Plugins
         public async Task<IActionResult> Index()
         {
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
             var applicationDbContext = _context.Plugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User);
             return View(await applicationDbContext.ToListAsync());
         }

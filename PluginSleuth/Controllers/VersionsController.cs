@@ -30,6 +30,9 @@ namespace PluginSleuth.Controllers
         // GET: Versions
         public async Task<IActionResult> Index()
         {
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
             var applicationDbContext = _context.Versions.Include(v => v.Plugin);
             return View(await applicationDbContext.ToListAsync());
         }

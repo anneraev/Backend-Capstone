@@ -29,6 +29,9 @@ namespace PluginSleuth.Controllers
         // GET: UserVersions
         public async Task<IActionResult> Index()
         {
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
             var applicationDbContext = _context.UserVersions.Include(u => u.User).Include(u => u.Version);
             return View(await applicationDbContext.ToListAsync());
         }
