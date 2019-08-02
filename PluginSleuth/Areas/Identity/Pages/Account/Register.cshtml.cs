@@ -81,6 +81,7 @@ namespace PluginSleuth.Areas.Identity.Pages.Account
             {
                 var user = new ApplicationUser
                 {
+                    Name = Input.Name,
                     UserName = Input.Email,
                     Email = Input.Email
                 };
