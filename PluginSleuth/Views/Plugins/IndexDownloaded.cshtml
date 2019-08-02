@@ -4,11 +4,11 @@
     ViewData["Title"] = "IndexDownloaded";
 }
 
-<h1>IndexDownloaded</h1>
+<h1>Downloaded Plugins</h1>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
@@ -22,20 +22,9 @@
                 @Html.DisplayNameFor(model => model.Engine)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PluginType)
+                @Html.DisplayNameFor(model => model.PluginType.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CommercialUse)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Free)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Webpage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsListed)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -46,30 +35,18 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Engine.About)
+                @Html.DisplayFor(modelItem => item.Engine.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PluginType.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CommercialUse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Free)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Webpage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsListed)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |
+                @*<a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |*@
                 <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>
+                @*<a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>*@
             </td>
         </tr>
 }

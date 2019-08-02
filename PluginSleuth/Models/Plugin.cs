@@ -19,6 +19,7 @@ namespace PluginSleuth.Models
         [Required]
         public string UserId { get; set; }
         [Required]
+        [Display(Name = "Author")]
         public ApplicationUser User { get; set; }
         [Required]
         [ForeignKey("Engine")]
