@@ -105,7 +105,9 @@ namespace PluginSleuth.Data
                     UserId = user.Id,
                     EngineId = 1,
                     PluginTypeId = 1,
-                    IsListed = true
+                    IsListed = true,
+                    About = "Controlled Turn Battle features turn-based battles where battlers act as soon as they have a command and actions affect turn order",
+                    CommercialUse = 3,
                 },
                 new Plugin()
                 {
@@ -114,7 +116,9 @@ namespace PluginSleuth.Data
                     UserId = user2.Id,
                     EngineId = 1,
                     PluginTypeId = 2,
-                    IsListed = true
+                    IsListed = true,
+                    About = "Modifiable menu plugin for flexible UI development.",
+                    CommercialUse = 3,
                 },
                 new Plugin()
                 {
@@ -123,7 +127,8 @@ namespace PluginSleuth.Data
                     UserId = user2.Id,
                     EngineId = 1,
                     PluginTypeId = 2,
-                    IsListed = true
+                    IsListed = true,
+                    About = "Modifiable menu plugin for flexible UI development.",
                 },
                 new Plugin()
                 {
@@ -132,7 +137,8 @@ namespace PluginSleuth.Data
                     UserId = user2.Id,
                     EngineId = 1,
                     PluginTypeId = 1,
-                    IsListed = true
+                    IsListed = true,
+                    About = "Allows the developer to set up skills with an area-of-effect target.",
                 },
                 new Plugin()
                 {
@@ -141,7 +147,8 @@ namespace PluginSleuth.Data
                     UserId = user.Id,
                     EngineId = 2,
                     PluginTypeId = 2,
-                    IsListed = true
+                    IsListed = true,
+                    About = "Start menu plugin for Game Maker",
                 },
 
                 new Plugin()
@@ -151,7 +158,8 @@ namespace PluginSleuth.Data
                     UserId = user2.Id,
                     EngineId = 2,
                     PluginTypeId = 2,
-                    IsListed = false
+                    IsListed = false,
+                    About = "This plugin is meant to be unlisted, and can only be viewed by its author or an admin.",
                 }
             );
 

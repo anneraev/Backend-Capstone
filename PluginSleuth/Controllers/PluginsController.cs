@@ -26,7 +26,7 @@ namespace PluginSleuth.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
 
-        // GET: Plugins
+        // GET: Plugins filtered by the user's authored plugins.
         public async Task<IActionResult> Index()
         {
             var currentUser = await GetCurrentUserAsync();
@@ -55,6 +55,7 @@ namespace PluginSleuth.Controllers
             }
         }
 
+        //Index filtered by downloaded status.
         public async Task<IActionResult> IndexDownloaded()
         {
             var currentUser = await GetCurrentUserAsync();
@@ -99,6 +100,32 @@ namespace PluginSleuth.Controllers
                 }
             }
         }
+
+        // GET: Plugins filtered by search parameters.
+        public async Task<IActionResult> IndexSearch(string searchString, string searchByUsage)
+        {
+            ViewData["searchByUsage"] = searchByUsage;
+            ViewData["CurrentFilter"] = searchString;
+
+            int searchUsage = Convert.ToInt32(searchByUsage);
+
+
+            //Search without an query in the nav bar (still narrows by dropdown values).
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                var plugins = _context.Plugins.Where(p => p.CommercialUse == searchUsage).Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToList();
+
+                return View(plugins);
+                
+            } else
+            //search by dropdown parameters and searchstring
+            {
+                var plugins = _context.Plugins.Where(p => p.CommercialUse == searchUsage).Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).Where(p => p.Title.Contains(searchString)).ToList();
+
+                return View(plugins);
+            }
+        }
+
 
 
         // GET: Plugins/Details/5

@@ -3,6 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    @model IEnumerable<PluginSleuth.Models.Plugin>
+
+    @{
+        ViewData["Title"] = "_Layout";
+    }
+
+
     <title>@ViewData["Title"] - PluginSleuth</title>
 
     <environment include="Development">
@@ -13,7 +21,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -35,6 +43,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Plugins" asp-action="IndexDownloaded">Downloaded Plugins</a>
                         </li>
+                        <li>
+                            <form asp-controller="Products" asp-action="IndexSearch" method="get">
+                                <input type="text" placeholder="Search plugins!" name="searchString" value="@ViewData["currentFilter"]" />
+                                <input type="submit" value="Search" class="btn btn-sm btn-info" />
+                                <select class="search-by" name="searchByUsage" value="@ViewData["searchByUsage"]">
+                                    <option value="0">Don't Restrict By Usage</option>
+                                    <option value="1">Paid Commercial Use</option>
+                                    <option value="3">Free Commercial Use</option>
+                                    <option value="2">Must Contact Author</option>
+                                </select>
+                                </form>
+                            </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
