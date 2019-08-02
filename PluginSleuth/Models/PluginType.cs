@@ -12,6 +12,7 @@ namespace PluginSleuth.Models
         [Key]
         public int PluginTypeId { get; set; }
         [Required]
+        [Display(Name = "Category")]
         public string Name { get; set; }
     }
 }

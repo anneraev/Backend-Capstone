@@ -29,9 +29,77 @@ namespace PluginSleuth.Controllers
         // GET: Plugins
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Plugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User);
-            return View(await applicationDbContext.ToListAsync());
+            var currentUser = await GetCurrentUserAsync();
+
+
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
+            //get a list of plugins, filtered by the current user Id.
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var plugins = _context.Plugins.Where(p => p.UserId == currentUser.Id);
+
+            if (plugins.Count() == 0)
+            {
+                return NotFound();
+            }
+            else  
+            {
+                await plugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToListAsync();
+                return View(plugins);
+            }
         }
+
+        public async Task<IActionResult> IndexDownloaded()
+        {
+            var currentUser = await GetCurrentUserAsync();
+
+
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
+            //get a list of plugins, filtered by the current user Id.
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            //get all plugins
+            var plugins = _context.Plugins;
+
+            //if no plugins, return not found.
+            if (plugins.Count() == 0)
+            {
+                return NotFound();
+            }
+            else
+            {
+                //get all user versions that match the user(with version included). This is the user's link to the plugins.
+                var userVersions = _context.UserVersions.Include(uv => uv.Version).Where(uv => uv.UserId == currentUser.Id);
+
+                //if no userVersions matching, return Not Found.
+                if (userVersions.Count() == 0)
+                {
+                    return NotFound();
+                } else
+                {
+                    //loop through userVersions, get a list of unique PluginIds.
+                    var pluginIds = userVersions.Select(uv => uv.Version.PluginId).Distinct().ToArray();
+                    //return list of plugins where pluginIds match one of the ids in the PluginIds array.
+                    var filteredPlugins = plugins.Where(p => Array.Exists(pluginIds, element => element == p.PluginId));
+                    //Include the navigational properties of the filtered set and convert to list.
+                    await filteredPlugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToListAsync();
+                    return View(filteredPlugins);
+                }
+            }
+        }
+
 
         // GET: Plugins/Details/5
         public async Task<IActionResult> Details(int? id)

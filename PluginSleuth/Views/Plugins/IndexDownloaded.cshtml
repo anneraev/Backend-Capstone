@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<PluginSleuth.Models.Plugin>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "IndexDownloaded";
 }
 
-<h1>My Plugins</h1>
+<h1>Downloaded Plugins</h1>
 
 @*<p>
     <a asp-action="Create">Create New</a>
@@ -16,14 +16,15 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Engine)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PluginType.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsListed)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -34,18 +35,18 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Engine.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PluginType.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsListed)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |
+                @*<a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |*@
                 <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>
+                @*<a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>*@
             </td>
         </tr>
 }
