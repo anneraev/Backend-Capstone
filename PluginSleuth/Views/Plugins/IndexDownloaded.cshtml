@@ -1,0 +1,77 @@
+﻿@model IEnumerable<PluginSleuth.Models.Plugin>
+
+@{
+    ViewData["Title"] = "IndexDownloaded";
+}
+
+<h1>IndexDownloaded</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Engine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PluginType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommercialUse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Free)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Webpage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsListed)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Engine.About)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PluginType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommercialUse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Free)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Webpage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsListed)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
