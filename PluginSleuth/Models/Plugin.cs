@@ -30,11 +30,13 @@ namespace PluginSleuth.Models
         public int PluginTypeId { get; set; }
         public PluginType PluginType { get; set;  }
 
-        //0=No, 1=PaidCommercial, 3=FreeCommercial
+        //0=NonCommercial, 1=PaidCommercial, 2=ContactAuthor, 3=FreeCommercial
         public int CommercialUse { get; set; }
         //Requires payment/patreon to download? Check this as true if you have optional donations.
         public bool Free { get; set; }
         public string Webpage { get; set; }
         public bool IsListed { get; set; }
+        [StringLength(255, ErrorMessage = "Please shorten the title to 255 characters")]
+        public string About { get; set; }
     }
 }

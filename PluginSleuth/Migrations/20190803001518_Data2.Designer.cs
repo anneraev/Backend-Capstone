@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PluginSleuth.Data;
 
 namespace PluginSleuth.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190803001518_Data2")]
+    partial class Data2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,7 +201,7 @@ namespace PluginSleuth.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "15400c7a-2e73-4efa-97f6-f954bdc9ac7e",
+                            ConcurrencyStamp = "c7f0fb1c-5e93-4f2d-91a1-e2d94bfef9e2",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             IsAdmin = true,
@@ -207,7 +209,7 @@ namespace PluginSleuth.Migrations
                             Name = "admin",
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEb7HplSm2YDRnMpfSJ0SMwDH4Vqa/vaGSiZ7UFZFnJgIUIXp23Qymcl/47Ewjda8w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDuPIwRoRjRoLTMoVkPhaHAhOAJYmnyKxtUzbbIQGfV2xEVkenMl1tqYCU8jZpp9jQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,
@@ -217,7 +219,7 @@ namespace PluginSleuth.Migrations
                         {
                             Id = "10000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7438404d-56e4-43e7-997a-ee9e05c2024b",
+                            ConcurrencyStamp = "b6311601-0257-4217-9beb-a3e1105beedd",
                             Email = "notadmin@notadmin.com",
                             EmailConfirmed = true,
                             IsAdmin = false,
@@ -225,7 +227,7 @@ namespace PluginSleuth.Migrations
                             Name = "notadmin",
                             NormalizedEmail = "NOTADMIN@NOTADMIN.COM",
                             NormalizedUserName = "NOTADMIN@NOTADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK33r3zy68yw8A3m3tZvpYP0Fb3yq9YFE2MSTRlVFMkDVpVs6AcP+WkO2P2Sfz7Ikg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFyKALdkrnW6ToY8WgkN6OM3xwCXRrtMRtgL/cgkh8S8ceAc898KA3T2KDXGfyJArQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "8f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,

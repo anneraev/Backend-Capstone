@@ -25,7 +25,6 @@ namespace PluginSleuth.Controllers
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-
         // GET: Engines
         public async Task<IActionResult> Index()
         {
