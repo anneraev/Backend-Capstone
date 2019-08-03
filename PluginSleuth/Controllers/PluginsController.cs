@@ -113,16 +113,36 @@ namespace PluginSleuth.Controllers
             //Search without an query in the nav bar (still narrows by dropdown values).
             if (!String.IsNullOrEmpty(searchString))
             {
-                var plugins = _context.Plugins.Where(p => p.CommercialUse == searchUsage).Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToList();
+                var plugins = await _context.Plugins.Where(p => p.CommercialUse == searchUsage)
+                    .Include(p => p.Engine)
+                    .Include(p => p.PluginType)
+                    .Include(p => p.User).ToListAsync();
 
                 return View(plugins);
                 
             } else
             //search by dropdown parameters and searchstring
             {
-                var plugins = _context.Plugins.Where(p => p.CommercialUse == searchUsage).Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).Where(p => p.Title.Contains(searchString)).ToList();
+                //only search by usage restriciton if it isn't 0 (no restrictions).
+                if (searchUsage != 0)
+                {
+                    //usage, PluginType, Engine, Only Free To Download Plugins.
+                    var plugins = await _context.Plugins.Include(p => p.Engine)
+                        .Include(p => p.PluginType)
+                        .Include(p => p.User)
+                        .Where(p => p.Title.Contains(searchString)).ToListAsync();
+                    return View(plugins);
 
-                return View(plugins);
+                }
+                else
+                {
+                    //PluginType, Engine, Only Free To Download Plugins.
+                    var plugins = await _context.Plugins.Where(p => p.CommercialUse == searchUsage)
+                        .Include(p => p.Engine).Include(p => p.PluginType)
+                        .Include(p => p.User).Where(p => p.Title
+                        .Contains(searchString)).ToListAsync();
+                    return View(plugins);
+                }
             }
         }
 

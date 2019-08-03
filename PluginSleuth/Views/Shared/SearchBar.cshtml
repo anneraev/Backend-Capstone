@@ -1,0 +1,18 @@
+﻿
+@model PluginSleuth.Models.LayoutModelView.SearchView
+@{
+    ViewData["Title"] = "SearchBar";
+}
+
+@*View for the search bar, which is nested in _layout.cshtml Gets data from the SearchView Model (which gets data from the SearchIndex controller method), and a list of engine and product types is passed to this view. In this view, they are used to pupulate the drop down lists used to narrow the search. These paramaters are sent to the IndexSearch controller method through asp-action, where a list of pluggins that fall into the search parameters passed from this model is gotten.*@
+<form asp-controller="Products" asp-action="IndexSearch" method="get">
+    <input type="text" placeholder="Search plugins!" name="searchString" value="@ViewData["currentFilter"]" />
+    <input type="submit" value="Search" class="btn btn-sm btn-info" />
+    <select class="search-by" name="searchByUsage" value="@ViewData["searchByUsage"]">
+        <option value="0">Don't Restrict By Usage</option>
+        <option value="1">Paid Commercial Use</option>
+        <option value="3">Free Commercial Use</option>
+        <option value="2">Must Contact Author</option>
+    </select>
+</form>
+

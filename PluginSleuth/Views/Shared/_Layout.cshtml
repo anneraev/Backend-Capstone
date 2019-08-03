@@ -4,11 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    @model IEnumerable<PluginSleuth.Models.Plugin>
+    @*Layout has a view model for dynamically getting the data to populate the dropdown lists, which are used to narrow the search.*@
 
-    @{
-        ViewData["Title"] = "_Layout";
-    }
+    @model IEnumerable<PluginSleuth.Models.LayoutModelView.LayoutView>
 
 
     <title>@ViewData["Title"] - PluginSleuth</title>

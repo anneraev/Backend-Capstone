@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PluginSleuth.Data;
 using PluginSleuth.Models;
+using PluginSleuth.Models.LayoutModelView;
 
 namespace PluginSleuth.Controllers
 {
@@ -24,6 +25,28 @@ namespace PluginSleuth.Controllers
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
+        // GET: Engines
+        public async Task<IActionResult> SearchBar()
+        {
+            //this controller gets Engine and PluginType data, which it sends to a view model for use by the layout's dropdown menu searchbar.
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
+            //get engines and plugin types
+            var engines = await _context.Engines.ToListAsync();
+            var pluginTypes = await _context.PluginTypes.ToListAsync();
+
+            //create the LayoutView object and pass in the engines and pluginTypes.
+            var viewModel = new SearchView
+            {
+                PluginTypes = pluginTypes,
+                Engines = engines
+            };
+
+            //return the view model.
+            return View(viewModel);
+        }
 
 
         // GET: Engines

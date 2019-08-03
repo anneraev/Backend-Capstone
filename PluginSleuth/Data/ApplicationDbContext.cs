@@ -118,7 +118,7 @@ namespace PluginSleuth.Data
                     PluginTypeId = 2,
                     IsListed = true,
                     About = "Modifiable menu plugin for flexible UI development.",
-                    CommercialUse = 3,
+                    CommercialUse = 2,
                 },
                 new Plugin()
                 {
@@ -129,6 +129,7 @@ namespace PluginSleuth.Data
                     PluginTypeId = 2,
                     IsListed = true,
                     About = "Modifiable menu plugin for flexible UI development.",
+                    CommercialUse = 1,
                 },
                 new Plugin()
                 {
@@ -139,6 +140,7 @@ namespace PluginSleuth.Data
                     PluginTypeId = 1,
                     IsListed = true,
                     About = "Allows the developer to set up skills with an area-of-effect target.",
+                    CommercialUse = 1,
                 },
                 new Plugin()
                 {
@@ -149,6 +151,7 @@ namespace PluginSleuth.Data
                     PluginTypeId = 2,
                     IsListed = true,
                     About = "Start menu plugin for Game Maker",
+                    CommercialUse = 0,
                 },
 
                 new Plugin()
@@ -160,6 +163,7 @@ namespace PluginSleuth.Data
                     PluginTypeId = 2,
                     IsListed = false,
                     About = "This plugin is meant to be unlisted, and can only be viewed by its author or an admin.",
+                    CommercialUse = 0,
                 }
             );
 
