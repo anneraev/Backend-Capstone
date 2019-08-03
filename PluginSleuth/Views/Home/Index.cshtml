@@ -1,8 +1,116 @@
-﻿@{
+﻿@model PluginSleuth.Models.HomeViews.HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4">RPGM PluginSleuth</h1>
+        <p>The number one source for hard-to-find plugins for many different game design engines. Search for plugins from the following: </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Engines.First().Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Engines.First().Language)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Engines.First().About)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Engines.First().Link)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Engines.First().BannerPath)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Engines)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Language)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.About)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Link)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BannerPath)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <div class="text-center">
+        <h2 class="display-4">Random Featured Plugin!</h2>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.User)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.User.Id)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.Engine)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.Engine.About)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.PluginType)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.PluginType.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.CommercialUse)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.CommercialUse)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.Free)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.Free)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.Webpage)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.Webpage)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.IsListed)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.IsListed)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.About)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.About)
+            </dd>
+        </dl>
+    </div>

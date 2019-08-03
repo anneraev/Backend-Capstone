@@ -156,8 +156,10 @@ namespace PluginSleuth.Controllers
             }
             if (searchPaid == 1)
             {
+                //if search is restricted to free plugins, filters all pay-to-download plugins.
                 pluginQueries = pluginQueries.Where(p => p.Free == true);
             }
+            //get navigational properties, return in view as a list.
             pluginQueries = pluginQueries.Where(p => p.EngineId == searchEngine && p.PluginTypeId == searchType);
             return View(await pluginQueries.Include(p => p.Engine).Include(p => p.PluginType)
                         .Include(p => p.User).ToListAsync());
@@ -189,6 +191,48 @@ namespace PluginSleuth.Controllers
 
             return View(plugin);
         }
+        
+        //Get a random number between two values.
+        public int RandomNumber(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min, max);
+        }
+
+
+        // GET: Randomly selected plugin and display on the front page.
+        public async Task<IActionResult> RandomFeaturedPlugin()
+        {
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            await BagSearchItems();
+
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
+            //get all plugins.
+            var allPlugns = await _context.Plugins.ToListAsync();
+
+            //get a random number between 1 and the number of plugins.
+            int id = RandomNumber(1, allPlugns.Count);
+
+            //get the plugin which matches that id.
+            var plugin = await _context.Plugins
+                .Include(p => p.Engine)
+                .Include(p => p.PluginType)
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.PluginId == id);
+            if (plugin == null)
+            {
+                return NotFound();
+            }
+
+            return View(plugin);
+        }
+
 
         // GET: Plugins/Create
         public IActionResult Create()
