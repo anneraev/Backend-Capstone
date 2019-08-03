@@ -123,51 +123,44 @@ namespace PluginSleuth.Controllers
         }
 
         // GET: Plugins filtered by search parameters.
-        public async Task<IActionResult> IndexSearch(string searchString, string searchByUsage)
+        public async Task<IActionResult> IndexSearch(string searchString, string searchByUsage, string searchByEngine, string searchByType, string searchByPaid)
         {
             //gets the search terms for the search bar in layout.
             await BagSearchItems();
 
             ViewData["searchByUsage"] = searchByUsage;
             ViewData["CurrentFilter"] = searchString;
+            ViewData["searchByEngine"] = searchByEngine;
+            ViewData["searchByType"] = searchByType;
+            ViewData["searchByPaid"] = searchByPaid;
 
             int searchUsage = Convert.ToInt32(searchByUsage);
+            int searchEngine = Convert.ToInt32(searchByEngine);
+            int searchType = Convert.ToInt32(searchByType);
+            int searchPaid = Convert.ToInt32(searchByPaid);
+
+            var plugins = _context.Plugins;
+
+            IQueryable<Plugin> pluginQueries = plugins;
 
 
             //Search without an query in the nav bar (still narrows by dropdown values).
             if (!String.IsNullOrEmpty(searchString))
             {
-                var plugins = await _context.Plugins.Where(p => p.CommercialUse == searchUsage)
-                    .Include(p => p.Engine)
-                    .Include(p => p.PluginType)
-                    .Include(p => p.User).ToListAsync();
-
-                return View(plugins);
-                
-            } else
-            //search by dropdown parameters and searchstring
+                pluginQueries = pluginQueries.Where(p => p.Title.Contains(searchString));
+            }
+            if (searchUsage != 0)
             {
                 //only search by usage restriciton if it isn't 0 (no restrictions).
-                if (searchUsage != 0)
-                {
-                    //usage, PluginType, Engine, Only Free To Download Plugins.
-                    var plugins = await _context.Plugins.Include(p => p.Engine)
-                        .Include(p => p.PluginType)
-                        .Include(p => p.User)
-                        .Where(p => p.Title.Contains(searchString)).ToListAsync();
-                    return View(plugins);
-
-                }
-                else
-                {
-                    //PluginType, Engine, Only Free To Download Plugins.
-                    var plugins = await _context.Plugins.Where(p => p.CommercialUse == searchUsage)
-                        .Include(p => p.Engine).Include(p => p.PluginType)
-                        .Include(p => p.User).Where(p => p.Title
-                        .Contains(searchString)).ToListAsync();
-                    return View(plugins);
-                }
+                pluginQueries = pluginQueries.Where(p => p.CommercialUse == searchUsage);
             }
+            if (searchPaid == 1)
+            {
+                pluginQueries = pluginQueries.Where(p => p.Free == true);
+            }
+            pluginQueries = pluginQueries.Where(p => p.EngineId == searchEngine && p.PluginTypeId == searchType);
+            return View(await pluginQueries.Include(p => p.Engine).Include(p => p.PluginType)
+                        .Include(p => p.User).ToListAsync());
         }
 
 

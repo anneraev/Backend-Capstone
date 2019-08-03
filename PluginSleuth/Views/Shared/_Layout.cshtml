@@ -39,17 +39,40 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Plugins" asp-action="IndexDownloaded">Downloaded Plugins</a>
                         </li>
                         <li>
-                            <form asp-controller="Products" asp-action="IndexSearch" method="get">
+                            @*Relies on data from the view bag to be populated by the current page's controller. If it has data, this chunk of code will render a search in the nav bar with options for narrowing the search that are populated by the data brought in by the ViewBag.*@
+                            @if (ViewBag.PluginTypes != null)
+                            {
+                            <form asp-controller="Plugins" asp-action="IndexSearch" method="get">
                                 <input type="text" placeholder="Search plugins!" name="searchString" value="@ViewData["currentFilter"]" />
-                                <input type="submit" value="Search" class="btn btn-sm btn-info" />
                                 <select class="search-by" name="searchByUsage" value="@ViewData["searchByUsage"]">
                                     <option value="0">Don't Restrict By Usage</option>
                                     <option value="1">Paid Commercial Use</option>
                                     <option value="3">Free Commercial Use</option>
                                     <option value="2">Must Contact Author</option>
                                 </select>
+                                <select class="search-by" name="searchByEngine" value="@ViewData["searchByEngine"]">
+                                    @foreach (var item in ViewBag.Engines)
+                                    {
+                                        <option value=@item.EngineId>@item.Title</option>
+                                    }
+                                </select>
+                                <select class="search-by" name="searchByType" value="@ViewData["searchByType"]">
+                                    @foreach (var item in ViewBag.PluginTypes)
+                                    {
+                                        <option value=@item.PluginTypeId>@item.Name</option>
+                                    }
+                                </select>
+                                @*<label for="search-by">Free-to-Download Only!</label>
+        <input type="checkbox" class="freeBool" name="freeBool" value="@ViewData["freeBool"]" />*@
+                                <select class="search-by" name="searchByPaid" value="@ViewData["searchByPaid"]">
+                                    <option value="0">Free & Paid Downloads</option>
+                                    <option value="1">Free Downloads Only</option>
+                                </select>
+
+                                <input type="submit" value="Search" class="btn btn-sm btn-info" />
                             </form>
-                        </li>
+                            }
+                            </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
