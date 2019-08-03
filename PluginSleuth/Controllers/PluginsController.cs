@@ -25,10 +25,28 @@ namespace PluginSleuth.Controllers
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-
-        // GET: Plugins filtered by the user's authored plugins.
-        public async Task<IActionResult> Index()
+        public async Task BagSearchItems()
         {
+            //this controller gets Engine and PluginType data, which gets placed in a viewBag for use by the plugin search feature in _Layaout. The Engines and Plugin Types are used in a dropdown to narrow the search.
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
+            //get engines and plugin types
+            var engines = await _context.Engines.ToListAsync();
+            var pluginTypes = await _context.PluginTypes.ToListAsync();
+
+            //add to view bag.
+            ViewBag.Engines = engines;
+            ViewBag.PluginTypes = pluginTypes;
+        }
+
+
+    // GET: Plugins filtered by the user's authored plugins.
+    public async Task<IActionResult> Index()
+        {
+            //gets the search terms for the search bar in layout.
+            await BagSearchItems();
+
             var currentUser = await GetCurrentUserAsync();
 
 
@@ -55,9 +73,12 @@ namespace PluginSleuth.Controllers
             }
         }
 
-        //Index filtered by downloaded status.
+        //Index filtered by downloaded status.  
         public async Task<IActionResult> IndexDownloaded()
         {
+            //gets the search terms for the search bar in layout.
+            await BagSearchItems();
+
             var currentUser = await GetCurrentUserAsync();
 
 
@@ -95,8 +116,8 @@ namespace PluginSleuth.Controllers
                     //return list of plugins where pluginIds match one of the ids in the PluginIds array.
                     var filteredPlugins = plugins.Where(p => Array.Exists(pluginIds, element => element == p.PluginId));
                     //Include the navigational properties of the filtered set and convert to list.
-                    await filteredPlugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToListAsync();
-                    return View(filteredPlugins);
+                    var pluginList = await filteredPlugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToListAsync();
+                    return View(pluginList);
                 }
             }
         }
@@ -104,6 +125,9 @@ namespace PluginSleuth.Controllers
         // GET: Plugins filtered by search parameters.
         public async Task<IActionResult> IndexSearch(string searchString, string searchByUsage)
         {
+            //gets the search terms for the search bar in layout.
+            await BagSearchItems();
+
             ViewData["searchByUsage"] = searchByUsage;
             ViewData["CurrentFilter"] = searchString;
 

@@ -1,13 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using PluginSleuth.Controllers
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    @*Layout has a view model for dynamically getting the data to populate the dropdown lists, which are used to narrow the search.*@
-
-    @model IEnumerable<PluginSleuth.Models.LayoutModelView.LayoutView>
-
 
     <title>@ViewData["Title"] - PluginSleuth</title>
 
@@ -51,8 +48,8 @@
                                     <option value="3">Free Commercial Use</option>
                                     <option value="2">Must Contact Author</option>
                                 </select>
-                                </form>
-                            </li>
+                            </form>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
