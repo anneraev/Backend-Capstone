@@ -10,57 +10,84 @@
     <h4>Plugin</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.About)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.About)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Engine)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Engine.About)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Engine.Title)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PluginType)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PluginType.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PluginType.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CommercialUse)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CommercialUse)
+        <dd class="col-sm-10">
+            @if (Model.CommercialUse == 0)
+            {
+                <p>Non-Commercial</p>
+            }
+            else if (Model.CommercialUse == 1)
+            {
+                <p>Paid Commercial Use</p>
+            }
+            else if (Model.CommercialUse == 2)
+            {
+                <p>Contact Author to Inquire</p>
+            }
+            else
+            {
+                <p>Free Commercial Use</p>
+            }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Free)
+        <dt class="col-sm-2">
+            @if (Model.Free == true)
+            {
+                <p>Download for Free!</p>
+            }
+            else
+            {
+                <p>Paid Download.</p>
+            }
+            @*<dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Free)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Free)
+            </dd>*@
+        <dd class="col-sm-10">
+        </dd>
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Free)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Webpage)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Webpage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsListed)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsListed)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.PluginId">Edit</a> |
+    @*<a asp-action="Edit" asp-route-id="@Model.PluginId">Edit</a> |*@
     <a asp-action="Index">Back to List</a>
 </div>
