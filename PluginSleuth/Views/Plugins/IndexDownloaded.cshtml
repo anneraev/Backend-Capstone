@@ -43,11 +43,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.PluginType.Name)
             </td>
-            <td>
-                @*<a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |*@
-                <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
-                @*<a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>*@
-            </td>
+            @if (ViewBag.Admin == true)
+            {
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>
+        </td>
+            } else
+            {
+        <td>
+            <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
+
+        </td>
+            }
         </tr>
 }
     </tbody>
