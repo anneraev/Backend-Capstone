@@ -45,7 +45,8 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a> |
+                <a asp-controller="Versions" asp-action="Index" asp-route-id="@item.PluginId">Versions</a>
             </td>
         </tr>
 }

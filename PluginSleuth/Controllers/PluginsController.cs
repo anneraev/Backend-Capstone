@@ -214,7 +214,7 @@ namespace PluginSleuth.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed")] Plugin plugin)
+        public async Task<IActionResult> Create([Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed,About")] Plugin plugin)
         {
             var currentUser = await GetCurrentUserAsync();
 
@@ -249,6 +249,7 @@ namespace PluginSleuth.Controllers
             }
             ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "Title", plugin.EngineId);
             ViewData["PluginTypeId"] = new SelectList(_context.PluginTypes, "PluginTypeId", "Name", plugin.PluginTypeId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers.Where(u => u.Id == plugin.UserId), "Id", "Name", plugin.UserId); ;
             return View(plugin);
         }
 
@@ -257,7 +258,7 @@ namespace PluginSleuth.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed")] Plugin plugin)
+        public async Task<IActionResult> Edit(int id, [Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed,About")] Plugin plugin)
         {
 
             if (id != plugin.PluginId)
@@ -273,6 +274,7 @@ namespace PluginSleuth.Controllers
             {
                 try
                 {
+                    //set old new user plugin Id to old user plugin id.
                     _context.Update(plugin);
                     await _context.SaveChangesAsync();
                 }

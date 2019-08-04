@@ -28,12 +28,18 @@ namespace PluginSleuth.Controllers
 
 
         // GET: Versions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             ModelState.Remove("UserId");
             ModelState.Remove("User");
 
-            var applicationDbContext = _context.Versions.Include(v => v.Plugin);
+            //receive Id of plugin from the action link.
+            var pId = Convert.ToInt32(id);
+
+            ViewBag.PluginId = pId;
+
+            //filter plugins  by the plugin id.
+            var applicationDbContext = _context.Versions.Where(v => v.PluginId == pId).Include(v => v.Plugin);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -61,9 +67,15 @@ namespace PluginSleuth.Controllers
         }
 
         // GET: Versions/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            ViewData["PluginId"] = new SelectList(_context.Plugins, "PluginId", "Title");
+            var pId = Convert.ToInt32(id);
+
+            //pass pluginId to view bag so the back button can navigate back to list.
+            ViewBag.Pid = pId;
+
+            //make the plugin Id the only choice.
+            ViewData["PluginId"] = new SelectList(_context.Plugins.Where(p => p.PluginId == pId), "PluginId", "Title");
             return View();
         }
 
@@ -80,9 +92,13 @@ namespace PluginSleuth.Controllers
 
             if (ModelState.IsValid)
             {
+                //set iteration to one plus the number of versions that already have this version's pluginId.
+                version.Iteration = _context.Versions.Where(v => v.PluginId == version.PluginId).Count() + 1;
                 _context.Add(version);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                //go to plugin details when creating new version.
+                return RedirectToAction("Details", "Plugins", new { id = version.PluginId });
             }
             ViewData["PluginId"] = new SelectList(_context.Plugins, "PluginId", "Title", version.PluginId);
             return View(version);
@@ -101,7 +117,7 @@ namespace PluginSleuth.Controllers
             {
                 return NotFound();
             }
-            ViewData["PluginId"] = new SelectList(_context.Plugins, "PluginId", "Title", version.PluginId);
+            ViewData["PluginId"] = new SelectList(_context.Plugins.Where(p => p.PluginId == version.PluginId), "PluginId", "Title");
             return View(version);
         }
 
@@ -125,6 +141,8 @@ namespace PluginSleuth.Controllers
             {
                 try
                 {
+                    //set new version iteration to old version iteration.
+                    version.Iteration = _context.Versions.FirstOrDefault(v => v.VersionId == version.VersionId).Iteration;
                     _context.Update(version);
                     await _context.SaveChangesAsync();
                 }
