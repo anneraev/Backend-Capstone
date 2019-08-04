@@ -44,6 +44,7 @@ namespace PluginSleuth.Controllers
     // GET: Plugins filtered by the user's authored plugins.
     public async Task<IActionResult> Index()
         {
+
             //gets the search terms for the search bar in layout.
             await BagSearchItems();
 
@@ -80,6 +81,9 @@ namespace PluginSleuth.Controllers
             await BagSearchItems();
 
             var currentUser = await GetCurrentUserAsync();
+
+            ViewBag.UserId = currentUser.Id;
+            ViewBag.Admin = currentUser.IsAdmin;
 
 
             ModelState.Remove("UserId");
@@ -128,6 +132,12 @@ namespace PluginSleuth.Controllers
             //gets the search terms for the search bar in layout.
             await BagSearchItems();
 
+            var currentUser = await GetCurrentUserAsync();
+
+            ViewBag.UserId = currentUser.Id;
+            ViewBag.Admin = currentUser.IsAdmin;
+
+
             ViewData["searchByUsage"] = searchByUsage;
             ViewData["CurrentFilter"] = searchString;
             ViewData["searchByEngine"] = searchByEngine;
@@ -161,6 +171,7 @@ namespace PluginSleuth.Controllers
             }
             //get navigational properties, return in view as a list.
             pluginQueries = pluginQueries.Where(p => p.EngineId == searchEngine && p.PluginTypeId == searchType);
+
             return View(await pluginQueries.Include(p => p.Engine).Include(p => p.PluginType)
                         .Include(p => p.User).ToListAsync());
         }
@@ -177,8 +188,6 @@ namespace PluginSleuth.Controllers
 
             ModelState.Remove("UserId");
             ModelState.Remove("User");
-
-
             var plugin = await _context.Plugins
                 .Include(p => p.Engine)
                 .Include(p => p.PluginType)
@@ -250,7 +259,6 @@ namespace PluginSleuth.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed")] Plugin plugin)
         {
-            var currentUser = await GetCurrentUserAsync();
 
             if (id != plugin.PluginId)
             {
@@ -265,7 +273,6 @@ namespace PluginSleuth.Controllers
             {
                 try
                 {
-                    plugin.UserId = currentUser.Id;
                     _context.Update(plugin);
                     await _context.SaveChangesAsync();
                 }
@@ -284,6 +291,7 @@ namespace PluginSleuth.Controllers
             }
             ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "About", plugin.EngineId);
             ViewData["PluginTypeId"] = new SelectList(_context.PluginTypes, "PluginTypeId", "Name", plugin.PluginTypeId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", plugin.UserId);
             return View(plugin);
         }
 

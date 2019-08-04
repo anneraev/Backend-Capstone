@@ -83,14 +83,13 @@ namespace PluginSleuth.Controllers
             ModelState.Remove("User");
 
             //get all plugins.
-            var allPlugns = await _context.Plugins.ToListAsync();
+            var allPlugns = await _context.Plugins.Where(p => p.IsListed == true).ToListAsync();
 
             //get a random number between 1 and the number of plugins.
             int id = RandomNumber(1, allPlugns.Count);
 
             //get the plugin which matches that id.
-            var plugin = await _context.Plugins
-                .Where(p => p.IsListed == true)
+             var plugin = await _context.Plugins
                 .Include(p => p.Engine)
                 .Include(p => p.PluginType)
                 .Include(p => p.User)

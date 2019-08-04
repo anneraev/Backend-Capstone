@@ -6,9 +6,9 @@
 
 <h1>IndexSearch</h1>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Engine)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PluginType)
+                @Html.DisplayNameFor(model => model.PluginType.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CommercialUse)
@@ -31,13 +31,10 @@
                 @Html.DisplayNameFor(model => model.Free)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Webpage)
+                @Html.DisplayNameFor(model => model.About)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsListed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.About)
             </th>
             <th></th>
         </tr>
@@ -58,25 +55,55 @@
                 @Html.DisplayFor(modelItem => item.PluginType.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CommercialUse)
+                @if (item.CommercialUse == 0)
+                {
+                    <p>Non-Commercial</p>
+                }
+                else if (item.CommercialUse == 1)
+                {
+                    <p>Paid Commercial Use</p>
+                }
+                else if (item.CommercialUse == 2)
+                {
+                    <p>Contact Author to Inquire</p>
+                }
+                else
+                {
+                    <p>Free Commercial Use</p>
+                }
+
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Free)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Webpage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsListed)
+                @if (item.Free == true)
+                {
+                    <p>Download for Free!</p>
+                }
+                else
+                {
+                    <p>Paid Download.</p>
+                }
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.About)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>
+                @Html.DisplayFor(modelItem => item.IsListed)
             </td>
+            @if (ViewBag.Admin == true)
+            {
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.PluginId">Details</a>
+                </td>
+            }
         </tr>
 }
     </tbody>
