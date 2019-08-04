@@ -141,8 +141,10 @@ namespace PluginSleuth.Controllers
             {
                 try
                 {
-                    //set new version iteration to old version iteration.
-                    version.Iteration = _context.Versions.FirstOrDefault(v => v.VersionId == version.VersionId).Iteration;
+                    //get iteration from original version, but remember to remove the oriignal version from _context or there will be errors resulting from duplicate Ids.
+                    var OldVersion = _context.Versions.FirstOrDefault(v => v.VersionId == version.VersionId);
+                    _context.Remove(OldVersion);
+                    version.Iteration = OldVersion.Iteration;
                     _context.Update(version);
                     await _context.SaveChangesAsync();
                 }
@@ -157,7 +159,8 @@ namespace PluginSleuth.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //redirect back to plugin details list.
+                return RedirectToAction("Index", "Versions", new { id = version.PluginId });
             }
             ViewData["PluginId"] = new SelectList(_context.Plugins, "PluginId", "Title", version.PluginId);
             return View(version);
@@ -190,7 +193,7 @@ namespace PluginSleuth.Controllers
             var version = await _context.Versions.FindAsync(id);
             _context.Versions.Remove(version);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Versions", new { id = version.PluginId });
         }
 
         private bool VersionExists(int id)
