@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ReadMe" class="control-label"></label>
-                <input asp-for="ReadMe" class="form-control" />
+                <textarea asp-for="ReadMe" class="form-control"></textarea>
                 <span asp-validation-for="ReadMe" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -32,11 +32,6 @@
                 <span asp-validation-for="DownloadLink" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Iteration" class="control-label"></label>
-                <input asp-for="Iteration" class="form-control" />
-                <span asp-validation-for="Iteration" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -44,7 +39,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-id ="@ViewBag.Pid">Back to List</a>
 </div>
 
 @section Scripts {
