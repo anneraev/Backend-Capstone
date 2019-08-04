@@ -193,7 +193,7 @@ namespace PluginSleuth.Controllers
             var version = await _context.Versions.FindAsync(id);
             _context.Versions.Remove(version);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Versions", new { id = version.PluginId });
         }
 
         private bool VersionExists(int id)
