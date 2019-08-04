@@ -65,19 +65,25 @@
                 @Html.DisplayFor(model => model.Plugin.Title)
             </dd>
             <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.About)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.About)
+            </dd>
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Plugin.User)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Plugin.User.Id)
+                @Html.DisplayFor(model => model.Plugin.User.Name)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Plugin.Engine)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Plugin.Engine.About)
+                @Html.DisplayFor(model => model.Plugin.Engine.Title)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Plugin.PluginType)
+                @Html.DisplayNameFor(model => model.Plugin.PluginType.Name)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Plugin.PluginType.Name)
@@ -86,31 +92,45 @@
                 @Html.DisplayNameFor(model => model.Plugin.CommercialUse)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Plugin.CommercialUse)
+                @if (Model.Plugin.CommercialUse == 0)
+                {
+                    <p>Non-Commercial</p>
+                }
+                else if (Model.Plugin.CommercialUse == 1)
+                {
+                    <p>Paid Commercial Use</p>
+                }
+                else if (Model.Plugin.CommercialUse == 2)
+                {
+                    <p>Contact Author to Inquire</p>
+                }
+                else
+                {
+                    <p>Free Commercial Use</p>
+                }
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Plugin.Free)
+                @if (Model.Plugin.Free == true)
+                {
+                    <p>Download for Free!</p>
+                }
+                else
+                {
+                    <p>Paid Download.</p>
+                }
+                @*<dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Free)
             </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Free)
+            </dd>*@
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Plugin.Free)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Plugin.Webpage)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Plugin.Webpage)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Plugin.IsListed)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Plugin.IsListed)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Plugin.About)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Plugin.About)
             </dd>
         </dl>
     </div>
