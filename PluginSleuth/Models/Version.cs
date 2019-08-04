@@ -18,6 +18,7 @@ namespace PluginSleuth.Models
         public string ReadMe { get; set; }
         [Required]
         [ForeignKey("Plugin")]
+        [Display(Name="Plugin")]
         public int PluginId { get; set; }
         public Plugin Plugin { get; set; }
         public string DownloadLink { get; set; }
