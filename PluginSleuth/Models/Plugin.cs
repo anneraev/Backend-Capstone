@@ -31,12 +31,15 @@ namespace PluginSleuth.Models
         public PluginType PluginType { get; set;  }
 
         //0=NonCommercial, 1=PaidCommercial, 2=ContactAuthor, 3=FreeCommercial
+        [Display(Name = "Commercial Use")]
         public int CommercialUse { get; set; }
         //Requires payment/patreon to download? Check this as true if you have optional donations.
+        [Display(Name ="Free download?")]
         public bool Free { get; set; }
+        [Url(ErrorMessage = "Please enter a valid url")]
         public string Webpage { get; set; }
         public bool IsListed { get; set; }
-        [StringLength(255, ErrorMessage = "Please shorten the title to 255 characters")]
+        [StringLength(255, ErrorMessage = "Please shorten the description to 255 characters")]
         public string About { get; set; }
     }
 }

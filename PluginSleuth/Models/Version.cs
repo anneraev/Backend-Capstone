@@ -13,7 +13,7 @@ namespace PluginSleuth.Models
         [Key]
         public int VersionId { get; set; }
         [Required]
-        [StringLength(255, ErrorMessage = "Please shorten the name to 50 characters")]
+        [StringLength(50, ErrorMessage = "Please shorten the name to 50 characters")]
         public string Name { get; set; }
         public string ReadMe { get; set; }
         [Required]

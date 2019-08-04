@@ -114,7 +114,7 @@ namespace PluginSleuth.Controllers
                     //loop through userVersions, get a list of unique PluginIds.
                     var pluginIds = userVersions.Select(uv => uv.Version.PluginId).Distinct().ToArray();
                     //return list of plugins where pluginIds match one of the ids in the PluginIds array.
-                    var filteredPlugins = plugins.Where(p => Array.Exists(pluginIds, element => element == p.PluginId));
+                    var filteredPlugins = plugins.Where(p => p.IsListed == true).Where(p => Array.Exists(pluginIds, element => element == p.PluginId));
                     //Include the navigational properties of the filtered set and convert to list.
                     var pluginList = await filteredPlugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToListAsync();
                     return View(pluginList);
@@ -192,54 +192,11 @@ namespace PluginSleuth.Controllers
             return View(plugin);
         }
         
-        //Get a random number between two values.
-        public int RandomNumber(int min, int max)
-        {
-            Random random = new Random();
-            return random.Next(min, max);
-        }
-
-
-        // GET: Randomly selected plugin and display on the front page.
-        public async Task<IActionResult> RandomFeaturedPlugin()
-        {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            await BagSearchItems();
-
-            ModelState.Remove("UserId");
-            ModelState.Remove("User");
-
-            //get all plugins.
-            var allPlugns = await _context.Plugins.ToListAsync();
-
-            //get a random number between 1 and the number of plugins.
-            int id = RandomNumber(1, allPlugns.Count);
-
-            //get the plugin which matches that id.
-            var plugin = await _context.Plugins
-                .Include(p => p.Engine)
-                .Include(p => p.PluginType)
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.PluginId == id);
-            if (plugin == null)
-            {
-                return NotFound();
-            }
-
-            return View(plugin);
-        }
-
-
         // GET: Plugins/Create
         public IActionResult Create()
         {
-            ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "About");
+            ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "Title");
             ViewData["PluginTypeId"] = new SelectList(_context.PluginTypes, "PluginTypeId", "Name");
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View();
         }
 
@@ -250,19 +207,21 @@ namespace PluginSleuth.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed")] Plugin plugin)
         {
+            var currentUser = await GetCurrentUserAsync();
 
             ModelState.Remove("UserId");
             ModelState.Remove("User");
 
             if (ModelState.IsValid)
             {
+                plugin.UserId = currentUser.Id;
+                plugin.IsListed = true;
                 _context.Add(plugin);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "About", plugin.EngineId);
+            ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "Title", plugin.EngineId);
             ViewData["PluginTypeId"] = new SelectList(_context.PluginTypes, "PluginTypeId", "Name", plugin.PluginTypeId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", plugin.UserId);
             return View(plugin);
         }
 
@@ -279,9 +238,8 @@ namespace PluginSleuth.Controllers
             {
                 return NotFound();
             }
-            ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "About", plugin.EngineId);
+            ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "Title", plugin.EngineId);
             ViewData["PluginTypeId"] = new SelectList(_context.PluginTypes, "PluginTypeId", "Name", plugin.PluginTypeId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", plugin.UserId);
             return View(plugin);
         }
 
@@ -292,6 +250,8 @@ namespace PluginSleuth.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed")] Plugin plugin)
         {
+            var currentUser = await GetCurrentUserAsync();
+
             if (id != plugin.PluginId)
             {
                 return NotFound();
@@ -305,6 +265,7 @@ namespace PluginSleuth.Controllers
             {
                 try
                 {
+                    plugin.UserId = currentUser.Id;
                     _context.Update(plugin);
                     await _context.SaveChangesAsync();
                 }
@@ -323,7 +284,6 @@ namespace PluginSleuth.Controllers
             }
             ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "About", plugin.EngineId);
             ViewData["PluginTypeId"] = new SelectList(_context.PluginTypes, "PluginTypeId", "Name", plugin.PluginTypeId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", plugin.UserId);
             return View(plugin);
         }
 

@@ -18,26 +18,24 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="EngineId" class="control-label"></label>
+                <label asp-for="Engine" class="control-label"></label>
                 <select asp-for="EngineId" class ="form-control" asp-items="ViewBag.EngineId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="PluginTypeId" class="control-label"></label>
+                <label asp-for="PluginType.Name" class="control-label"></label>
                 <select asp-for="PluginTypeId" class ="form-control" asp-items="ViewBag.PluginTypeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="CommercialUse" class="control-label"></label>
-                <input asp-for="CommercialUse" class="form-control" />
-                <span asp-validation-for="CommercialUse" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Free" /> @Html.DisplayNameFor(model => model.Free)
-                </label>
+                    <select asp-for="CommercialUse" class="form-control">
+                        <option value="0">No Commercial Use</option>
+                        <option value="1">Paid Commercial Use</option>
+                        <option value="3">Free Commercial Use</option>
+                        <option value="2">Must Contact Author</option>
+                    </select>
+                    @*<label asp-for="CommercialUse" class="control-label"></label>
+            <input asp-for="CommercialUse" class="form-control" />
+            <span asp-validation-for="CommercialUse" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="Webpage" class="control-label"></label>
@@ -46,7 +44,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsListed" /> @Html.DisplayNameFor(model => model.IsListed)
+                    <input class="form-check-input" asp-for="Free" /> @Html.DisplayNameFor(model => model.Free)
                 </label>
             </div>
             <div class="form-group">

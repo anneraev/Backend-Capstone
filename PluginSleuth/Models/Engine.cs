@@ -13,7 +13,6 @@ namespace PluginSleuth.Models
         public int EngineId { get; set; }
         [Required]
         [StringLength(50, ErrorMessage = "Please shorten the title to 50 characters")]
-
         public string Title { get; set; }
         public string Language { get; set; }
         [Required]
