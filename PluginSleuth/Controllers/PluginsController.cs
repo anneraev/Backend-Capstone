@@ -249,7 +249,7 @@ namespace PluginSleuth.Controllers
             }
             ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "Title", plugin.EngineId);
             ViewData["PluginTypeId"] = new SelectList(_context.PluginTypes, "PluginTypeId", "Name", plugin.PluginTypeId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers.Where(u => u.Id == plugin.UserId), "Id", "Id", plugin.UserId); ;
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers.Where(u => u.Id == plugin.UserId), "Id", "Name", plugin.UserId); ;
             return View(plugin);
         }
 
