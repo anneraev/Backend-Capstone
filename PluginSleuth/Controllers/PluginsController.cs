@@ -85,9 +85,16 @@ namespace PluginSleuth.Controllers
 
             var currentUser = await GetCurrentUserAsync();
 
-            ViewBag.UserId = currentUser.Id;
-            ViewBag.Admin = currentUser.IsAdmin;
-
+            if (currentUser != null)
+            {
+                ViewBag.UserId = currentUser.Id;
+                ViewBag.Admin = currentUser.IsAdmin;
+            }
+            else
+            {
+                ViewBag.UserId = "0";
+                ViewBag.Admin = false;
+            }
 
             ModelState.Remove("UserId");
             ModelState.Remove("User");
@@ -152,9 +159,15 @@ namespace PluginSleuth.Controllers
 
             var currentUser = await GetCurrentUserAsync();
 
-            ViewBag.UserId = currentUser.Id;
-            ViewBag.Admin = currentUser.IsAdmin;
-
+            if (currentUser != null)
+            {
+                ViewBag.UserId = currentUser.Id;
+                ViewBag.Admin = currentUser.IsAdmin;
+            } else
+            {
+                ViewBag.UserId = "0";
+                ViewBag.Admin = false;
+            }
 
             ViewData["searchByUsage"] = searchByUsage;
             ViewData["CurrentFilter"] = searchString;
@@ -172,7 +185,7 @@ namespace PluginSleuth.Controllers
             IQueryable<Plugin> pluginQueries = plugins;
 
             //filters out unlisted plugins if the user is not an admin (admins can see unlisted plugins).
-            if (currentUser.IsAdmin == false)
+            if (currentUser == null || currentUser.IsAdmin == false)
             {
 
                 pluginQueries = pluginQueries.Where(p => p.IsListed == true);
@@ -252,7 +265,13 @@ namespace PluginSleuth.Controllers
             }
 
             //add webpage url to viewbag (using @model.displayfor as the url causes bugs)
-            ViewBag.Url = plugin.Webpage;
+            if (plugin.Webpage != null)
+            {
+                ViewBag.Url = plugin.Webpage;
+            } else
+            {
+                ViewBag.Url = "";  
+            }
 
             //strongly typed local variable to be set in the following if/else statement.
             Version currentVersion;
@@ -275,7 +294,14 @@ namespace PluginSleuth.Controllers
                 currentVersion = versions.FirstOrDefault(); 
             }
 
-            ViewBag.Vurl = currentVersion.DownloadLink;
+            if (currentVersion != null && currentVersion.DownloadLink != null)
+            {
+                ViewBag.Vurl = currentVersion.DownloadLink;
+            }
+            else
+            {
+                ViewBag.Vurl = "";
+            }
 
             //get user version if one exists, otherwise it can be set to null.
             UserVersion userVersion = null;
@@ -284,17 +310,37 @@ namespace PluginSleuth.Controllers
             //get the pluginId from the int? that was passed to this method.
             var pluginId = Convert.ToInt32(id);
             //filter userVersions by the pluginId where it matches the version's plugin Id.
-            if (userVersions != null)
+
+            IQueryable<UserVersion> matchingUserVersions = null;
+
+            if (currentUser != null && userVersions != null)
             {
-                var matchingUserVersions = userVersions.Where(uv => uv.Version.PluginId == pluginId);
+                matchingUserVersions = userVersions.Where(uv => uv.Version.PluginId == pluginId);
                 if (matchingUserVersions != null)
                 {
-                    //always get the earliest (original) user version.
-                    userVersion = matchingUserVersions.OrderBy(uv => uv.VersionId).FirstOrDefault();
+                    if (matchingUserVersions.Count() > 1)
+                    {
+                        //always get the earliest (original) user version.
+                        userVersion = matchingUserVersions.OrderBy(uv => uv.VersionId).FirstOrDefault();
 
+                    } else if (matchingUserVersions.Count() == 1)
+                    {
+                        userVersion = matchingUserVersions.FirstOrDefault();
+                    }
                 }
-            }
+               }
             //instantiate view model and add the version list, current version and plugin to it.
+
+            string currentUserId;
+
+            if (currentUser != null)
+            {
+                currentUserId = currentUser.Id;
+            } else
+            {
+                currentUserId = "0";
+            }
+
             var modelView = new PluginVersionModelView()
             {
                 Versions = versions.ToList(),
@@ -303,7 +349,9 @@ namespace PluginSleuth.Controllers
 
                 CurrentVersion = currentVersion,
 
-                UserVersion = userVersion
+                UserVersion = userVersion,
+
+                currentUserId = currentUserId
             };
 
             //return the view model.
@@ -311,8 +359,16 @@ namespace PluginSleuth.Controllers
         }
         
         // GET: Plugins/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+
+            var currentUser = await GetCurrentUserAsync();
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
             ViewData["EngineId"] = new SelectList(_context.Engines, "EngineId", "Title");
             ViewData["PluginTypeId"] = new SelectList(_context.PluginTypes, "PluginTypeId", "Name");
             return View();
@@ -335,6 +391,15 @@ namespace PluginSleuth.Controllers
                 plugin.UserId = currentUser.Id;
                 plugin.IsListed = true;
                 _context.Add(plugin);
+                await _context.SaveChangesAsync();
+                //create inital version
+                var version = new Version()
+                {
+                    Name = "Initial",
+                    PluginId = plugin.PluginId
+                };
+                //save initial version.
+                _context.Add(version);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

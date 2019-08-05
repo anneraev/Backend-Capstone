@@ -59,7 +59,14 @@ namespace PluginSleuth.Controllers
                 Engines = engines
             };
 
-            ViewBag.Url = plugin.Webpage;
+            if (plugin.Webpage != "" && plugin.Webpage != null)
+            {
+                ViewBag.Url = plugin.Webpage;
+            }
+            else
+            {
+                ViewBag.Url = "";
+            }
 
             //return viewModel
             return View(viewModel);
@@ -87,16 +94,21 @@ namespace PluginSleuth.Controllers
             //get all plugins.
             var allPlugns = await _context.Plugins.Where(p => p.IsListed == true).ToListAsync();
 
-            //get a random number between 1 and the number of plugins.
-            int id = RandomNumber(1, allPlugns.Count);
+            //instantiate plugin in preparation for it to be set.
+            Plugin plugin = null;
 
-            //get the plugin which matches that id.
-             var plugin = await _context.Plugins
-                .Include(p => p.Engine)
-                .Include(p => p.PluginType)
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.PluginId == id);
+            //get a random number between 1 and the number of plugins. If this does not result in a found plugin, loop back until one is found.
+            while (plugin == null)
+            {
+                int id = RandomNumber(1, allPlugns.Count + 1);
+                //get the plugin which matches that id.
+                plugin = await _context.Plugins.Include(p => p.Engine)
+                   .Include(p => p.PluginType)
+                   .Include(p => p.User)
+                    .FirstOrDefaultAsync(m => m.PluginId == id);
+            }
 
+            //return plugin once found.
             return plugin;
         }
 
