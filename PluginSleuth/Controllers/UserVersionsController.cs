@@ -162,7 +162,11 @@ namespace PluginSleuth.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //get the pluginId for navigation back to plugin page.
+                var PluginId = _context.Versions.FirstOrDefault(v => v.VersionId == userVersion.VersionId).PluginId;
+                //navigate back to plugin page.
+                return RedirectToAction("Details", "Plugins", new { id = PluginId });
+
             }
             return NotFound();
         }
