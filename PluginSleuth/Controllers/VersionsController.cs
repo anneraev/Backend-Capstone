@@ -63,6 +63,8 @@ namespace PluginSleuth.Controllers
                 return NotFound();
             }
 
+            ViewBag.Vurl = version.DownloadLink;
+
             return View(version);
         }
 

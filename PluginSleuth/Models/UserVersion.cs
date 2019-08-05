@@ -21,5 +21,6 @@ namespace PluginSleuth.Models
         [ForeignKey("Version")]
         public int VersionId { get; set; }
         public Version Version { get; set; }
+        public bool Hidden { get; set; }
     }
 }

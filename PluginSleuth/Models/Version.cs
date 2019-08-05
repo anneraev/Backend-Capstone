@@ -21,6 +21,7 @@ namespace PluginSleuth.Models
         [Display(Name="Plugin")]
         public int PluginId { get; set; }
         public Plugin Plugin { get; set; }
+        [Url(ErrorMessage = "Please enter a valid url")]
         public string DownloadLink { get; set; }
         public List<UserVersion> UserVersions { get; set; }
         [Required]

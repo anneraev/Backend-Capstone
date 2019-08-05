@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PluginSleuth.Data;
 using PluginSleuth.Models;
+using PluginSleuth.Models.PluginViews;
+using Version = PluginSleuth.Models.Version;
+using System.Web;
 
 namespace PluginSleuth.Controllers
 {
@@ -117,8 +120,23 @@ namespace PluginSleuth.Controllers
                 {
                     //loop through userVersions, get a list of unique PluginIds.
                     var pluginIds = userVersions.Select(uv => uv.Version.PluginId).Distinct().ToArray();
-                    //return list of plugins where pluginIds match one of the ids in the PluginIds array.
-                    var filteredPlugins = plugins.Where(p => p.IsListed == true).Where(p => Array.Exists(pluginIds, element => element == p.PluginId));
+                    IQueryable<Plugin> filteredPlugins = plugins.Where(p => Array.Exists(pluginIds, element => element == p.PluginId));
+                    //filters out unlisted plugins if the user is not an admin (admins can see unlisted plugins).
+                    if (currentUser.IsAdmin == false) {
+                        filteredPlugins = filteredPlugins.Where(p => p.IsListed == true);
+                    }
+                    //for each plugin, determine if an associated user version is hidden, and if so, remove it from the list.
+                    await filteredPlugins.ForEachAsync(p =>
+                    {
+                        //find the first plugin user version.
+                        var pluginUserVersion = userVersions.Where(uv => uv.Version.PluginId == p.PluginId).OrderBy(uv => uv.UserVersionId).FirstOrDefault();
+                        //remove if hidden.
+                        if (pluginUserVersion.Hidden == true)
+                        {
+                            filteredPlugins = filteredPlugins.Where(pu => pu.PluginId != pluginUserVersion.Version.PluginId);
+                        }
+
+                    });
                     //Include the navigational properties of the filtered set and convert to list.
                     var pluginList = await filteredPlugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToListAsync();
                     return View(pluginList);
@@ -153,7 +171,11 @@ namespace PluginSleuth.Controllers
 
             IQueryable<Plugin> pluginQueries = plugins;
 
-
+            //filters out unlisted plugins if the user is not an admin (admins can see unlisted plugins).
+            if (currentUser.IsAdmin == false)
+            {
+                pluginQueries = pluginQueries.Where(p => p.IsListed == true);
+            }
             //Search without an query in the nav bar (still narrows by dropdown values).
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -183,6 +205,11 @@ namespace PluginSleuth.Controllers
         // GET: Plugins/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var currentUser = await GetCurrentUserAsync();
+
+            //get query string value i.e.: "?version=1"
+            var query = Request.QueryString.ToString();
+
             if (id == null)
             {
                 return NotFound();
@@ -195,12 +222,72 @@ namespace PluginSleuth.Controllers
                 .Include(p => p.PluginType)
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.PluginId == id);
+
+            //get all associated versions, ordered in descending order by their iteration #s.
+            var versions = _context.Versions.Where(v => v.PluginId == id).OrderByDescending(v => v.Iteration);
+
             if (plugin == null)
             {
                 return NotFound();
             }
 
-            return View(plugin);
+            //add webpage url to viewbag (using @model.displayfor as the url causes bugs)
+            ViewBag.Url = plugin.Webpage;
+
+            //strongly typed local variable to be set in the following if/else statement.
+            Version currentVersion;
+
+            //set the current display version by the url string, or set it to the latest by default if none exists.
+            if (query.Contains("version"))
+            {
+                //get version # as string from url query string
+                var versionString = HttpUtility.ParseQueryString(query).Get("version");
+
+                //convert string to int
+                var versionNum = Convert.ToInt32(versionString);
+
+                //compare into to version ids of all versions and get the one that matches, set it as the currentVersion.
+                currentVersion = versions.FirstOrDefault(v => v.VersionId == versionNum);
+
+            } else
+            {
+                //if no version Id can be derrived from the url query, select the first (latest iteration).
+                currentVersion = versions.FirstOrDefault(); 
+            }
+
+            ViewBag.Vurl = currentVersion.DownloadLink;
+
+            //get user version if one exists, otherwise it can be set to null.
+            UserVersion userVersion = null;
+            //start by finding all that match userId, then including their version.
+            var userVersions = _context.UserVersions.Where(uv => uv.UserId == currentUser.Id).Include(uv => uv.Version);
+            //get the pluginId from the int? that was passed to this method.
+            var pluginId = Convert.ToInt32(id);
+            //filter userVersions by the pluginId where it matches the version's plugin Id.
+            if (userVersions != null)
+            {
+                var matchingUserVersions = userVersions.Where(uv => uv.Version.PluginId == pluginId);
+                if (matchingUserVersions != null)
+                {
+                    //always get the earliest (original) user version.
+                    userVersion = matchingUserVersions.OrderBy(uv => uv.VersionId).FirstOrDefault();
+
+                }
+            }
+            //instantiate view model and add the version list, current version and plugin to it.
+            var modelView = new PluginVersionModelView()
+            {
+                Versions = versions.ToList(),
+
+                Plugin = plugin,
+
+                CurrentVersion = currentVersion,
+
+                UserVersion = userVersion
+            };
+
+            //return the view model.
+            return View(modelView);
         }
         
         // GET: Plugins/Create
@@ -276,7 +363,10 @@ namespace PluginSleuth.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
+                {   //set IsList to the value of that property on the previous instance of this plugin.
+                    var oldPlugin = _context.Plugins.FirstOrDefault(p => p.PluginId == plugin.PluginId);
+                    _context.Remove(oldPlugin);
+                    plugin.IsListed = oldPlugin.IsListed;
                     _context.Update(plugin);
                     await _context.SaveChangesAsync();
                 }
