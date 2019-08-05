@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using PluginSleuth.Data;
 using PluginSleuth.Models;
 using PluginSleuth.Models.PluginViews;
+using Version = PluginSleuth.Models.Version;
+using System.Web;
 
 namespace PluginSleuth.Controllers
 {
@@ -184,6 +186,9 @@ namespace PluginSleuth.Controllers
         // GET: Plugins/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //get query string value i.e.: "?version=1"
+            var query = Request.QueryString.ToString();
+
             if (id == null)
             {
                 return NotFound();
@@ -197,18 +202,28 @@ namespace PluginSleuth.Controllers
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.PluginId == id);
 
-            //get all associated versions.
-            var versions = _context.Versions.Where(v => v.PluginId == id);
-
-            //get a list of all urls for versions.
-            var vurls = versions.Select(v => v.DownloadLink).ToList();
+            //get all associated versions, ordered in descending order by their iteration #s.
+            var versions = _context.Versions.Where(v => v.PluginId == id).OrderByDescending(v => v.Iteration);
 
             if (plugin == null)
             {
                 return NotFound();
             }
 
+            //add webpage url to viewbag (using @model.displayfor as the url causes bugs)
             ViewBag.Url = plugin.Webpage;
+
+            //strongly typed local variable to be set in the following if/else statement.
+            Version currentVersion;
+
+            //set the current display version by the url string, or set it to the latest by default if none exists.
+            if (query.Contains("version"))
+            {
+                var versionString = HttpUtility.ParseQueryString(query).Get("version");
+            } else
+            {
+                currentVersion = versions.First();   
+            }
 
             //instantiate view model and add the versions and plugin to it.
             var modelView = new PluginVersionModelView()
@@ -217,10 +232,6 @@ namespace PluginSleuth.Controllers
 
                 Plugin = plugin
             };
-
-            //put the list of version download urls into the view bag.
-
-            ViewBag.Vurls = vurls;
 
             //return the view model.
             return View(modelView);

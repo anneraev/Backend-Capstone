@@ -87,6 +87,13 @@
     </dl>
 </div>
 <div>
+    <nav aria-label="Version Pagination">
+        <ul class="pagination">
+            @foreach (var item in Model.Versions) {
+            <li class="page-item"><a asp-action="Details" asp-route-id="@Model.Plugin.PluginId" asp-route-version="@item.VersionId" class="page-link">@item.Name</a></li>
+            }
+        </ul>
+    </nav>
     @*<a asp-action="Edit" asp-route-id="@Model.PluginId">Edit</a> |*@
     @*<a asp-action="Index">Back to List</a>*@
 </div>
