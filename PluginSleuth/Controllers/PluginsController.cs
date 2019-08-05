@@ -299,54 +299,6 @@ namespace PluginSleuth.Controllers
             return View(plugin);
         }
 
-        // POST: Plugins/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        public async Task<IActionResult> Unlist(int id)
-        {
-            var plugin = await _context.Plugins.FirstOrDefaultAsync(p => p.PluginId == id);
-
-            if (plugin == null)
-            {
-                return NotFound();
-            }
-
-            ModelState.Remove("UserId");
-            ModelState.Remove("User");
-
-
-            if (ModelState.IsValid)
-            {
-                try
-                {   //toggle isList for plugin.
-                    if (plugin.IsListed == true)
-                    {
-                        plugin.IsListed = false;
-                    } else
-                    {
-                        plugin.IsListed = true;
-                    }
-                    //update ad save changes
-                    _context.Update(plugin);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PluginExists(plugin.PluginId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(plugin);
-        }
-
-
         // GET: Plugins/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
