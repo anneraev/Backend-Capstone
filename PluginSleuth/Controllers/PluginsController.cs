@@ -121,7 +121,11 @@ namespace PluginSleuth.Controllers
                     //loop through userVersions, get a list of unique PluginIds.
                     var pluginIds = userVersions.Select(uv => uv.Version.PluginId).Distinct().ToArray();
                     //return list of plugins where pluginIds match one of the ids in the PluginIds array.
-                    var filteredPlugins = plugins.Where(p => p.IsListed == true).Where(p => Array.Exists(pluginIds, element => element == p.PluginId));
+                    IQueryable<Plugin> filteredPlugins = plugins.Where(p => Array.Exists(pluginIds, element => element == p.PluginId));
+                    //filters out unlisted plugins if the user is not an admin (admins can see unlisted plugins).
+                    if (currentUser.IsAdmin == false) {
+                        filteredPlugins = filteredPlugins.Where(p => p.IsListed == true);
+                    }
                     //Include the navigational properties of the filtered set and convert to list.
                     var pluginList = await filteredPlugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToListAsync();
                     return View(pluginList);
@@ -156,7 +160,11 @@ namespace PluginSleuth.Controllers
 
             IQueryable<Plugin> pluginQueries = plugins;
 
-
+            //filters out unlisted plugins if the user is not an admin (admins can see unlisted plugins).
+            if (currentUser.IsAdmin == false)
+            {
+                pluginQueries = pluginQueries.Where(p => p.IsListed == true);
+            }
             //Search without an query in the nav bar (still narrows by dropdown values).
             if (!String.IsNullOrEmpty(searchString))
             {
