@@ -1,4 +1,4 @@
-﻿@model PluginSleuth.Models.Plugin
+﻿@model PluginSleuth.Models.PluginViews.PluginVersionModelView
 
 @{
     ViewData["Title"] = "Details";
@@ -11,48 +11,48 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.Plugin.Title)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
+            @Html.DisplayFor(model => model.Plugin.Title)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.About)
+            @Html.DisplayNameFor(model => model.Plugin.About)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.About)
+            @Html.DisplayFor(model => model.Plugin.About)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            @Html.DisplayNameFor(model => model.Plugin.User)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Name)
+            @Html.DisplayFor(model => model.Plugin.User.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Engine)
+            @Html.DisplayNameFor(model => model.Plugin.Engine)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Engine.Title)
+            @Html.DisplayFor(model => model.Plugin.Title)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PluginType.Name)
+            @Html.DisplayNameFor(model => model.Plugin.PluginType.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PluginType.Name)
+            @Html.DisplayFor(model => model.Plugin.PluginType.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CommercialUse)
+            @Html.DisplayNameFor(model => model.Plugin.CommercialUse)
         </dt>
         <dd class="col-sm-10">
-            @if (Model.CommercialUse == 0)
+            @if (Model.Plugin.CommercialUse == 0)
             {
                 <p>Non-Commercial</p>
             }
-            else if (Model.CommercialUse == 1)
+            else if (Model.Plugin.CommercialUse == 1)
             {
                 <p>Paid Commercial Use</p>
             }
-            else if (Model.CommercialUse == 2)
+            else if (Model.Plugin.CommercialUse == 2)
             {
                 <p>Contact Author to Inquire</p>
             }
@@ -62,7 +62,7 @@
             }
         </dd>
         <dt class="col-sm-2">
-            @if (Model.Free == true)
+            @if (Model.Plugin.Free == true)
             {
                 <p>Download for Free!</p>
             }
@@ -79,10 +79,10 @@
         <dd class="col-sm-10">
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Webpage)
+            @Html.DisplayNameFor(model => model.Plugin.Webpage)
         </dt>
         <dd class="col-sm-10">
-            <a target="_blank" href=@ViewBag.Url>@Html.DisplayFor(model => model.Title)</a>
+            <a target="_blank" href=@ViewBag.Url>@Html.DisplayFor(model => model.Plugin.Title)</a>
         </dd>
     </dl>
 </div>

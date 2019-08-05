@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PluginSleuth.Data;
 using PluginSleuth.Models;
+using PluginSleuth.Models.PluginViews;
 
 namespace PluginSleuth.Controllers
 {
@@ -195,6 +196,13 @@ namespace PluginSleuth.Controllers
                 .Include(p => p.PluginType)
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.PluginId == id);
+
+            //get all associated versions.
+            var versions = _context.Versions.Where(v => v.PluginId == id);
+
+            //get a list of all urls for versions.
+            var vurls = versions.Select(v => v.DownloadLink).ToList();
+
             if (plugin == null)
             {
                 return NotFound();
@@ -202,7 +210,20 @@ namespace PluginSleuth.Controllers
 
             ViewBag.Url = plugin.Webpage;
 
-            return View(plugin);
+            //instantiate view model and add the versions and plugin to it.
+            var modelView = new PluginVersionModelView()
+            {
+                Versions = versions.ToList(),
+
+                Plugin = plugin
+            };
+
+            //put the list of version download urls into the view bag.
+
+            ViewBag.Vurls = vurls;
+
+            //return the view model.
+            return View(modelView);
         }
         
         // GET: Plugins/Create
