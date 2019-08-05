@@ -63,7 +63,13 @@ namespace PluginSleuth.Controllers
                 return NotFound();
             }
 
-            ViewBag.Vurl = version.DownloadLink;
+            if (version.DownloadLink != null)
+            {
+                ViewBag.Vurl = version.DownloadLink;
+            } else
+            {
+                ViewBag.Vurl = "";
+            }
 
             return View(version);
         }
