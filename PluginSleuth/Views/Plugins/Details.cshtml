@@ -9,22 +9,19 @@
 <div>
     <h4>Plugin</h4>
     <hr />
-    @if (Model.UserVersion != null || Model.UserVersion.Hidden != true)
-    {
-        <a asp-action="Edit" asp-controller="UserVersions" asp-route-id="@Model.UserVersion.UserVersionId">Remove From Watchlist</a>
-    }
-    else
-    {
-        if (Model.UserVersion != null)
+    @if (Model.UserVersion != null && Model.UserVersion.Hidden != true)
         {
-            <a asp-action="Edit" asp-controller="UserVersions" asp-route-id="@Model.UserVersion.UserVersionId">Add To My Watchlist</a>
+        <a asp-action="Edit" asp-controller="UserVersions" asp-route-id="@Model.UserVersion.UserVersionId">Remove From Watchlist</a>
+        }
+    else if (Model.UserVersion != null && Model.UserVersion.Hidden == true)
+        {
+        <a asp-action="Edit" asp-controller="UserVersions" asp-route-id="@Model.UserVersion.UserVersionId">Add To My Watchlist</a>
 
         }
-        else
+    else
         {
             <a asp-action="Create" asp-controller="UserVersions" asp-route-id="@Model.CurrentVersion.VersionId">Add To My Watchlist</a>
         }
-    }
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Plugin.Title)
