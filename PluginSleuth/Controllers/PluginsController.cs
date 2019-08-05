@@ -219,18 +219,31 @@ namespace PluginSleuth.Controllers
             //set the current display version by the url string, or set it to the latest by default if none exists.
             if (query.Contains("version"))
             {
+                //get version # as string from url query string
                 var versionString = HttpUtility.ParseQueryString(query).Get("version");
+
+                //convert string to int
+                var versionNum = Convert.ToInt32(versionString);
+
+                //compare into to version ids of all versions and get the one that matches, set it as the currentVersion.
+                currentVersion = versions.FirstOrDefault(v => v.VersionId == versionNum);
+
             } else
             {
-                currentVersion = versions.First();   
+                //if no version Id can be derrived from the url query, select the first (latest iteration).
+                currentVersion = versions.First(); 
             }
 
-            //instantiate view model and add the versions and plugin to it.
+            ViewBag.Vurl = currentVersion.DownloadLink;
+
+            //instantiate view model and add the version list, current version and plugin to it.
             var modelView = new PluginVersionModelView()
             {
                 Versions = versions.ToList(),
 
-                Plugin = plugin
+                Plugin = plugin,
+
+                CurrentVersion = currentVersion
             };
 
             //return the view model.

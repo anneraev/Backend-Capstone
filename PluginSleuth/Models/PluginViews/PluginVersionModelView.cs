@@ -9,5 +9,6 @@ namespace PluginSleuth.Models.PluginViews
     {
         public List<Version> Versions { get; set; }
         public Plugin Plugin { get; set; }
+        public Version CurrentVersion { get; set; }
     }
 }
