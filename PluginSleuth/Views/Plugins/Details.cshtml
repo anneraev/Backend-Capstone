@@ -89,11 +89,37 @@
 <div>
     <nav aria-label="Version Pagination">
         <ul class="pagination">
-            @foreach (var item in Model.Versions) {
-            <li class="page-item"><a asp-action="Details" asp-route-id="@Model.Plugin.PluginId" asp-route-version="@item.VersionId" class="page-link">@item.Name</a></li>
+            @foreach (var item in Model.Versions)
+            {
+                <li class="page-item"><a asp-action="Details" asp-route-id="@Model.Plugin.PluginId" asp-route-version="@item.VersionId" class="page-link">@item.Name</a></li>
             }
         </ul>
     </nav>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CurrentVersion.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CurrentVersion.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CurrentVersion.ReadMe)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CurrentVersion.ReadMe)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CurrentVersion.DownloadLink)
+            </dt>
+            <dd class="col-sm-10">
+                <a target="_blank" href=@ViewBag.Vurl>@Html.DisplayFor(model => model.CurrentVersion.Name)</a>
+            </dd>
+        </dl>
+    </div>
+
+
     @*<a asp-action="Edit" asp-route-id="@Model.PluginId">Edit</a> |*@
     @*<a asp-action="Index">Back to List</a>*@
 </div>
