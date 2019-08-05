@@ -43,7 +43,16 @@
                 @Html.DisplayFor(modelItem => item.IsListed)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |
+                @if (@item.IsListed == true)
+                {
+                    <a asp-controller="UnlistPlugin" asp-action="Edit" asp-route-id="@item.PluginId">Unlist</a>
+                }
+                else
+                {
+                    <a asp-controller="UnlistPlugin" asp-action="Edit" asp-route-id="@item.PluginId">List</a>
+
+                }
+                | <a asp-action="Edit" asp-route-id="@item.PluginId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.PluginId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.PluginId">Delete</a> |
                 <a asp-controller="Versions" asp-action="Index" asp-route-id="@item.PluginId">Versions</a>

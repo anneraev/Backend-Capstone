@@ -157,6 +157,7 @@ namespace PluginSleuth.Controllers
             //Search without an query in the nav bar (still narrows by dropdown values).
             if (!String.IsNullOrEmpty(searchString))
             {
+                //narrow by title if there is a search query in the txt box.
                 pluginQueries = pluginQueries.Where(p => p.Title.Contains(searchString));
             }
             if (searchUsage != 0)
@@ -169,9 +170,10 @@ namespace PluginSleuth.Controllers
                 //if search is restricted to free plugins, filters all pay-to-download plugins.
                 pluginQueries = pluginQueries.Where(p => p.Free == true);
             }
-            //get navigational properties, return in view as a list.
+            //filter down to the plugins that match the EngineId and PluginId of those respective search parameters.
             pluginQueries = pluginQueries.Where(p => p.EngineId == searchEngine && p.PluginTypeId == searchType);
 
+            //get navigational properties, return in view as a list.
             return View(await pluginQueries.Include(p => p.Engine).Include(p => p.PluginType)
                         .Include(p => p.User).ToListAsync());
         }
@@ -243,6 +245,7 @@ namespace PluginSleuth.Controllers
             }
 
             var plugin = await _context.Plugins.FindAsync(id);
+
             if (plugin == null)
             {
                 return NotFound();
@@ -274,7 +277,6 @@ namespace PluginSleuth.Controllers
             {
                 try
                 {
-                    //set old new user plugin Id to old user plugin id.
                     _context.Update(plugin);
                     await _context.SaveChangesAsync();
                 }
@@ -296,6 +298,54 @@ namespace PluginSleuth.Controllers
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", plugin.UserId);
             return View(plugin);
         }
+
+        // POST: Plugins/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        public async Task<IActionResult> Unlist(int id)
+        {
+            var plugin = await _context.Plugins.FirstOrDefaultAsync(p => p.PluginId == id);
+
+            if (plugin == null)
+            {
+                return NotFound();
+            }
+
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
+
+            if (ModelState.IsValid)
+            {
+                try
+                {   //toggle isList for plugin.
+                    if (plugin.IsListed == true)
+                    {
+                        plugin.IsListed = false;
+                    } else
+                    {
+                        plugin.IsListed = true;
+                    }
+                    //update ad save changes
+                    _context.Update(plugin);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PluginExists(plugin.PluginId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(plugin);
+        }
+
 
         // GET: Plugins/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -323,6 +373,24 @@ namespace PluginSleuth.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //get all versions matching the current PluginId.
+            var versions = _context.Versions.Where(v => v.PluginId == id);
+
+            //create an array of just the version Ids.
+            var versionIds = versions.Select(v => v.VersionId).ToArray();
+
+            //get all user versions which match one of the list of version Ids.
+            var userVersions = _context.UserVersions.Where(uv => Array.Exists(versionIds, element => element == uv.VersionId));
+
+            //remove the list of user versions.
+            _context.RemoveRange(userVersions);
+            await _context.SaveChangesAsync();
+
+            //remove the list of versions
+            _context.RemoveRange(versions);
+            await _context.SaveChangesAsync();
+
+            //finally, remove the plugin (now free of foreign key restrictions).
             var plugin = await _context.Plugins.FindAsync(id);
             _context.Plugins.Remove(plugin);
             await _context.SaveChangesAsync();
