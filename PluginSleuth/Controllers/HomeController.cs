@@ -59,6 +59,8 @@ namespace PluginSleuth.Controllers
                 Engines = engines
             };
 
+            ViewBag.Url = plugin.Webpage;
+
             //return viewModel
             return View(viewModel);
         }

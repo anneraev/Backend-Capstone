@@ -130,7 +130,7 @@
             @Html.DisplayNameFor(model => model.Plugin.Webpage)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Plugin.Webpage)
+            <a target="_blank" href=@ViewBag.Url>@Html.DisplayFor(model => model.Plugin.Title)</a>
         </dd>
     </dl>
 </div>

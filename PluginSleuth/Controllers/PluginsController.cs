@@ -200,6 +200,8 @@ namespace PluginSleuth.Controllers
                 return NotFound();
             }
 
+            ViewBag.Url = plugin.Webpage;
+
             return View(plugin);
         }
         

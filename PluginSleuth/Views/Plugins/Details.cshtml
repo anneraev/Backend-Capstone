@@ -82,7 +82,7 @@
             @Html.DisplayNameFor(model => model.Webpage)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Webpage)
+            <a target="_blank" href=@ViewBag.Url>@Html.DisplayFor(model => model.Title)</a>
         </dd>
     </dl>
 </div>
