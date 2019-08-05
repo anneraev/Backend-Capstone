@@ -233,7 +233,7 @@ namespace PluginSleuth.Controllers
             } else
             {
                 //if no version Id can be derrived from the url query, select the first (latest iteration).
-                currentVersion = versions.First(); 
+                currentVersion = versions.FirstOrDefault(); 
             }
 
             ViewBag.Vurl = currentVersion.DownloadLink;
@@ -251,7 +251,7 @@ namespace PluginSleuth.Controllers
                 if (matchingUserVersions != null)
                 {
                     //always get the earliest (original) user version.
-                    userVersion = matchingUserVersions.OrderBy(uv => uv.VersionId).First();
+                    userVersion = matchingUserVersions.OrderBy(uv => uv.VersionId).FirstOrDefault();
 
                 }
             }

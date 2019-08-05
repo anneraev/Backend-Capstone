@@ -108,6 +108,7 @@ namespace PluginSleuth.Data
                     IsListed = true,
                     About = "Controlled Turn Battle features turn-based battles where battlers act as soon as they have a command and actions affect turn order",
                     CommercialUse = 3,
+                    Keywords = ""
                 },
                 new Plugin()
                 {
@@ -119,6 +120,8 @@ namespace PluginSleuth.Data
                     IsListed = true,
                     About = "Modifiable menu plugin for flexible UI development.",
                     CommercialUse = 2,
+                    Keywords = ""
+
                 },
                 new Plugin()
                 {
@@ -130,6 +133,8 @@ namespace PluginSleuth.Data
                     IsListed = true,
                     About = "Modifiable menu plugin for flexible UI development.",
                     CommercialUse = 1,
+                    Keywords = ""
+
                 },
                 new Plugin()
                 {
@@ -141,6 +146,8 @@ namespace PluginSleuth.Data
                     IsListed = true,
                     About = "Allows the developer to set up skills with an area-of-effect target.",
                     CommercialUse = 1,
+                    Keywords = ""
+
                 },
                 new Plugin()
                 {
@@ -152,6 +159,8 @@ namespace PluginSleuth.Data
                     IsListed = true,
                     About = "Start menu plugin for Game Maker",
                     CommercialUse = 0,
+                    Keywords = ""
+
                 },
 
                 new Plugin()
@@ -164,6 +173,8 @@ namespace PluginSleuth.Data
                     IsListed = false,
                     About = "This plugin is meant to be unlisted, and can only be viewed by its author or an admin.",
                     CommercialUse = 0,
+                    Keywords = ""
+
                 }
             );
 
@@ -225,12 +236,14 @@ namespace PluginSleuth.Data
                     UserVersionId = 1,
                     UserId = user.Id,
                     VersionId = 1,
+                    Hidden = false
                 },
                 new UserVersion()
                 {
                     UserVersionId = 2,
                     UserId = user.Id,
                     VersionId = 2,
+                    Hidden = false
                 },
                 //test case for when user only has an outdated version
                 new UserVersion()
@@ -238,12 +251,14 @@ namespace PluginSleuth.Data
                     UserVersionId = 3,
                     UserId = user2.Id,
                     VersionId = 4,
+                    Hidden = false
                 },
                 new UserVersion()
                 {
                     UserVersionId = 4,
                     UserId = user.Id,
-                    VersionId = 5
+                    VersionId = 5,
+                    Hidden = false
                 }
                 );
         }

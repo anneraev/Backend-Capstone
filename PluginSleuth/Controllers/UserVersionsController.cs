@@ -104,19 +104,21 @@ namespace PluginSleuth.Controllers
         // GET: UserVersions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            //pass the original user version to the edit function, where the "Hidden" property will be toggled on or off.
             if (id == null)
             {
                 return NotFound();
             }
+
+            var uvId = Convert.ToInt32(id);
 
             var userVersion = await _context.UserVersions.FindAsync(id);
             if (userVersion == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", userVersion.UserId);
-            ViewData["VersionId"] = new SelectList(_context.Versions, "VersionId", "Name", userVersion.VersionId);
-            return View(userVersion);
+            return await Edit(uvId, userVersion);
         }
 
         // POST: UserVersions/Edit/5
@@ -139,6 +141,13 @@ namespace PluginSleuth.Controllers
             {
                 try
                 {
+                    if (userVersion.Hidden == true)
+                    {
+                        userVersion.Hidden = false;
+                    } else
+                    {
+                        userVersion.Hidden = true;
+                    }
                     _context.Update(userVersion);
                     await _context.SaveChangesAsync();
                 }
@@ -155,9 +164,7 @@ namespace PluginSleuth.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", userVersion.UserId);
-            ViewData["VersionId"] = new SelectList(_context.Versions, "VersionId", "Name", userVersion.VersionId);
-            return View(userVersion);
+            return NotFound();
         }
 
         // GET: UserVersions/Delete/5

@@ -41,5 +41,6 @@ namespace PluginSleuth.Models
         public bool IsListed { get; set; }
         [StringLength(255, ErrorMessage = "Please shorten the description to 255 characters")]
         public string About { get; set; }
+        public string Keywords { get; set; }
     }
 }
