@@ -174,13 +174,8 @@ namespace PluginSleuth.Controllers
             //filters out unlisted plugins if the user is not an admin (admins can see unlisted plugins).
             if (currentUser.IsAdmin == false)
             {
+
                 pluginQueries = pluginQueries.Where(p => p.IsListed == true);
-            }
-            //Search without an query in the nav bar (still narrows by dropdown values).
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                //narrow by title if there is a search query in the txt box.
-                pluginQueries = pluginQueries.Where(p => p.Title.Contains(searchString));
             }
             if (searchUsage != 0)
             {
@@ -194,6 +189,31 @@ namespace PluginSleuth.Controllers
             }
             //filter down to the plugins that match the EngineId and PluginId of those respective search parameters.
             pluginQueries = pluginQueries.Where(p => p.EngineId == searchEngine && p.PluginTypeId == searchType);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                await pluginQueries.ForEachAsync(p =>
+                {
+                    if (p.Keywords != "" && p.Keywords != null)
+                    {
+                        //get keyword hash
+                        var keywordHash = p.Keywords.Split(";");
+                        //if search string doesn't contain any of the keywords, and does not appear in the title, it is filtered out.
+                        if (!keywordHash.Any(k => searchString.Contains(k)) && !p.Title.Contains(searchString))
+                        {
+                            pluginQueries = pluginQueries.Where(pu => pu.PluginId != p.PluginId);
+                        }
+                    } else
+                    { //filter by title string only.
+                        if (!p.Title.Contains(searchString))
+                        {
+                            pluginQueries = pluginQueries.Where(pu => pu.PluginId != p.PluginId);
+                        }
+
+                    }
+                });
+            }
+
 
             //get navigational properties, return in view as a list.
             return View(await pluginQueries.Include(p => p.Engine).Include(p => p.PluginType)
@@ -303,7 +323,7 @@ namespace PluginSleuth.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed,About")] Plugin plugin)
+        public async Task<IActionResult> Create([Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed,About,Keywords")] Plugin plugin)
         {
             var currentUser = await GetCurrentUserAsync();
 
@@ -348,7 +368,7 @@ namespace PluginSleuth.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed,About")] Plugin plugin)
+        public async Task<IActionResult> Edit(int id, [Bind("PluginId,Title,UserId,EngineId,PluginTypeId,CommercialUse,Free,Webpage,IsListed,About,Keywords")] Plugin plugin)
         {
 
             if (id != plugin.PluginId)
