@@ -120,12 +120,23 @@ namespace PluginSleuth.Controllers
                 {
                     //loop through userVersions, get a list of unique PluginIds.
                     var pluginIds = userVersions.Select(uv => uv.Version.PluginId).Distinct().ToArray();
-                    //return list of plugins where pluginIds match one of the ids in the PluginIds array.
                     IQueryable<Plugin> filteredPlugins = plugins.Where(p => Array.Exists(pluginIds, element => element == p.PluginId));
                     //filters out unlisted plugins if the user is not an admin (admins can see unlisted plugins).
                     if (currentUser.IsAdmin == false) {
                         filteredPlugins = filteredPlugins.Where(p => p.IsListed == true);
                     }
+                    //for each plugin, determine if an associated user version is hidden, and if so, remove it from the list.
+                    await filteredPlugins.ForEachAsync(p =>
+                    {
+                        //find the first plugin user version.
+                        var pluginUserVersion = userVersions.Where(uv => uv.Version.PluginId == p.PluginId).OrderBy(uv => uv.UserVersionId).FirstOrDefault();
+                        //remove if hidden.
+                        if (pluginUserVersion.Hidden == true)
+                        {
+                            filteredPlugins = filteredPlugins.Where(pu => pu.PluginId != pluginUserVersion.Version.PluginId);
+                        }
+
+                    });
                     //Include the navigational properties of the filtered set and convert to list.
                     var pluginList = await filteredPlugins.Include(p => p.Engine).Include(p => p.PluginType).Include(p => p.User).ToListAsync();
                     return View(pluginList);
