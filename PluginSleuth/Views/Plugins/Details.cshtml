@@ -9,6 +9,22 @@
 <div>
     <h4>Plugin</h4>
     <hr />
+    @if (Model.UserVersion != null || Model.UserVersion.Hidden != true)
+    {
+        <a asp-action="Edit" asp-controller="UserVersions" asp-route-id="@Model.UserVersion.UserVersionId">Remove From Watchlist</a>
+    }
+    else
+    {
+        if (Model.UserVersion != null)
+        {
+            <a asp-action="Edit" asp-controller="UserVersions" asp-route-id="@Model.UserVersion.UserVersionId">Add To My Watchlist</a>
+
+        }
+        else
+        {
+            <a asp-action="Create" asp-controller="UserVersions" asp-route-id="@Model.CurrentVersion.VersionId">Add To My Watchlist</a>
+        }
+    }
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Plugin.Title)
@@ -71,11 +87,11 @@
                 <p>Paid Download.</p>
             }
             @*<dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Free)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Free)
-            </dd>*@
+                    @Html.DisplayNameFor(model => model.Free)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Free)
+                </dd>*@
         <dd class="col-sm-10">
         </dd>
         <dt class="col-sm-2">

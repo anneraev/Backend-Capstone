@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PluginSleuth.Data;
 using PluginSleuth.Models;
+using Version = PluginSleuth.Models.Version;
 
 namespace PluginSleuth.Controllers
 {
@@ -61,11 +62,12 @@ namespace PluginSleuth.Controllers
         }
 
         // GET: UserVersions/Create
-        public IActionResult Create()
+        //calls the second version create using parameters passed to it.
+        public async Task<IActionResult> Create(int? id)
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
-            ViewData["VersionId"] = new SelectList(_context.Versions, "VersionId", "Name");
-            return View();
+            var versionId = Convert.ToInt32(id);
+            var userVersion = new UserVersion();
+            return await Create(userVersion, versionId);
         }
 
         // POST: UserVersions/Create
@@ -73,21 +75,30 @@ namespace PluginSleuth.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserVersionId,UserId,VersionId")] UserVersion userVersion)
+        public async Task<IActionResult> Create([Bind("UserVersionId,UserId,VersionId")] UserVersion userVersion, int id)
         {
 
             ModelState.Remove("UserId");
             ModelState.Remove("User");
 
+            //create UserVersion, setting its two parameters without user input and returning to plugin page.
             if (ModelState.IsValid)
             {
+                var currentUser = await GetCurrentUserAsync();
+
+                userVersion.VersionId = id;
+                userVersion.UserId = currentUser.Id;
                 _context.Add(userVersion);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                //after saving, find plugin that matches the version Id, and store its Id (for navigation back to plugin page).
+                var PluginId = _context.Versions.FirstOrDefault(v => v.VersionId == id).PluginId;
+                //navigate back to plugin page.
+                return RedirectToAction("Details", "Plugins", new { id = PluginId });
+
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", userVersion.UserId);
-            ViewData["VersionId"] = new SelectList(_context.Versions, "VersionId", "Name", userVersion.VersionId);
-            return View(userVersion);
+
+            return NotFound();
         }
 
         // GET: UserVersions/Edit/5

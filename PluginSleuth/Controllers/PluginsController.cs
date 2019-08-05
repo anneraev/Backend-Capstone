@@ -186,6 +186,8 @@ namespace PluginSleuth.Controllers
         // GET: Plugins/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var currentUser = await GetCurrentUserAsync();
+
             //get query string value i.e.: "?version=1"
             var query = Request.QueryString.ToString();
 
@@ -236,6 +238,23 @@ namespace PluginSleuth.Controllers
 
             ViewBag.Vurl = currentVersion.DownloadLink;
 
+            //get user version if one exists, otherwise it can be set to null.
+            UserVersion userVersion = null;
+            //start by finding all that match userId, then including their version.
+            var userVersions = _context.UserVersions.Where(uv => uv.UserId == currentUser.Id).Include(uv => uv.Version);
+            //get the pluginId from the int? that was passed to this method.
+            var pluginId = Convert.ToInt32(id);
+            //filter userVersions by the pluginId where it matches the version's plugin Id.
+            if (userVersions != null)
+            {
+                var matchingUserVersions = userVersions.Where(uv => uv.Version.PluginId == pluginId);
+                if (matchingUserVersions != null)
+                {
+                    //always get the earliest (original) user version.
+                    userVersion = matchingUserVersions.OrderBy(uv => uv.VersionId).First();
+
+                }
+            }
             //instantiate view model and add the version list, current version and plugin to it.
             var modelView = new PluginVersionModelView()
             {
@@ -243,7 +262,9 @@ namespace PluginSleuth.Controllers
 
                 Plugin = plugin,
 
-                CurrentVersion = currentVersion
+                CurrentVersion = currentVersion,
+
+                UserVersion = userVersion
             };
 
             //return the view model.
@@ -323,7 +344,10 @@ namespace PluginSleuth.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
+                {   //set IsList to the value of that property on the previous instance of this plugin.
+                    var oldPlugin = _context.Plugins.FirstOrDefault(p => p.PluginId == plugin.PluginId);
+                    _context.Remove(oldPlugin);
+                    plugin.IsListed = oldPlugin.IsListed;
                     _context.Update(plugin);
                     await _context.SaveChangesAsync();
                 }

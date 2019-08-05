@@ -10,5 +10,7 @@ namespace PluginSleuth.Models.PluginViews
         public List<Version> Versions { get; set; }
         public Plugin Plugin { get; set; }
         public Version CurrentVersion { get; set; }
+        //only used to check if the user has one associated with them.
+        public UserVersion UserVersion { get; set; }
     }
 }
