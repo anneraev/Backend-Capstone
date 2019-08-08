@@ -72,13 +72,17 @@ namespace PluginSleuth.Data
                 {
                     EngineId = 1,
                     Title = "RPG Maker MV",
-                    About = "With tools for managing database, a javascript code base, and the ability to deploy to Mac, PC, and Mobile! With RPG Maker MV, almost anyone (even a child) can make a game!"
+                    About = "With tools for managing database, a javascript code base, and the ability to deploy to Mac, PC, and Mobile! With RPG Maker MV, almost anyone (even a child) can make a game!",
+                    BannerPath= "https://d289qh4hsbjjw7.cloudfront.net/rpgmaker-20130522223546811/files/program-logo-rpg-maker-mv.png",
+                    Link= "http://www.rpgmakerweb.com/products/programs/rpg-maker-mv/"
                 },
                 new Engine()
                 {
                     EngineId = 2,
                     Title = "Game Maker",
-                    About = "Game Maker makes games!"
+                    About = "Game Maker makes games!",
+                    BannerPath = "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn03.androidauthority.net%2Fwp-content%2Fuploads%2F2015%2F09%2FGameMaker-Studio-Logo.jpg&f=1",
+                    Link = "https://www.yoyogames.com/gamemaker"
                 }
             );
 

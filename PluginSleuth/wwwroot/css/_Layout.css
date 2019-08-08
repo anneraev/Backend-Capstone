@@ -1,0 +1,11 @@
+﻿.brand-image {
+    height: 75%;
+    width: 75%
+}
+
+.engine-banner {
+    /*height: 30%;
+    width: 30%;*/
+    max-width: 270px;
+    max-height: 56px;
+}

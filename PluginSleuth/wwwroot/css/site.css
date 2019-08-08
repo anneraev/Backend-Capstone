@@ -7,6 +7,11 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.brand-image {
+    height: 300%;
+    width: 300%
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

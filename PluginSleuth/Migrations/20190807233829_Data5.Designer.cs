@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PluginSleuth.Data;
 
 namespace PluginSleuth.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190807233829_Data5")]
+    partial class Data5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,7 +201,7 @@ namespace PluginSleuth.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "326ee973-cb8e-4006-8fc1-9f94e4e94b19",
+                            ConcurrencyStamp = "9a5d9e9c-1517-4b88-8946-565479abe651",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             IsAdmin = true,
@@ -207,7 +209,7 @@ namespace PluginSleuth.Migrations
                             Name = "admin",
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBwcHQPMA7WhtAroojBkvs6DXkKvFXZZGa1aqsvgWaxAJzIUGZRAoIqXqvGhsji7+g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGyhiMNEIpT5pz3cvG7rJfR1Gs6X2cM2/dXT5DJIeJ4j6/9aZyffhS7eLfV6ugAaDg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,
@@ -217,7 +219,7 @@ namespace PluginSleuth.Migrations
                         {
                             Id = "10000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f3b9ca3f-d04d-48da-b6db-b68a95125f04",
+                            ConcurrencyStamp = "3405df69-9aa3-4aed-a0b0-4cc2b4bce103",
                             Email = "notadmin@notadmin.com",
                             EmailConfirmed = true,
                             IsAdmin = false,
@@ -225,7 +227,7 @@ namespace PluginSleuth.Migrations
                             Name = "notadmin",
                             NormalizedEmail = "NOTADMIN@NOTADMIN.COM",
                             NormalizedUserName = "NOTADMIN@NOTADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECidgK134GhAmg6+CmA+O1JqboPX2jOM0cLMt9NBpS5Q6QixL/UUBKyYKExS1+1NQg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMGg+PtyVfGJ5lWUwulCKea04/1JMoAw5H2qiCbzSIlJUKNUH2loE1CWCBIKXPqZ2A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "8f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,
@@ -271,7 +273,6 @@ namespace PluginSleuth.Migrations
                             EngineId = 2,
                             About = "Game Maker makes games!",
                             BannerPath = "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn03.androidauthority.net%2Fwp-content%2Fuploads%2F2015%2F09%2FGameMaker-Studio-Logo.jpg&f=1",
-                            Link = "https://www.yoyogames.com/gamemaker",
                             Title = "Game Maker"
                         });
                 });

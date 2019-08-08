@@ -87,12 +87,13 @@ namespace PluginSleuth.Controllers
 
         public async Task<Plugin> RandomFeaturedPlugin()
         {
+            var currentUser = await GetCurrentUserAsync();
 
             ModelState.Remove("UserId");
             ModelState.Remove("User");
 
             //get all plugins.
-            var allPlugns = await _context.Plugins.Where(p => p.IsListed == true).ToListAsync();
+            var allPlugns = await _context.Plugins.ToListAsync();
 
             //instantiate plugin in preparation for it to be set.
             Plugin plugin = null;
@@ -106,6 +107,11 @@ namespace PluginSleuth.Controllers
                    .Include(p => p.PluginType)
                    .Include(p => p.User)
                     .FirstOrDefaultAsync(m => m.PluginId == id);
+                //nullifies plugin if it isn't listed
+                if (plugin.IsListed == false)
+                {
+                        plugin = null;
+                }
             }
 
             //return plugin once found.
