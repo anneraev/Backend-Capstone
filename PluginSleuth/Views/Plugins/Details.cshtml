@@ -4,7 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>
+    @Html.DisplayFor(model => model.Plugin.Title)
+</h1>
 
 <div>
     <h4>Plugin</h4>
@@ -24,17 +26,16 @@
         {
             <a asp-action="Create" asp-controller="UserVersions" asp-route-id="@Model.CurrentVersion.VersionId">Add To My Watchlist</a>
         }
-    } else
+    }
+    else
     {
         <p>Log in to add this plugin to your watchlist!</p>
     }
+
+    <br />
+    <br />
+
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Plugin.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Plugin.Title)
-        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Plugin.About)
         </dt>
@@ -51,7 +52,7 @@
             @Html.DisplayNameFor(model => model.Plugin.Engine)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Plugin.Title)
+            @Html.DisplayFor(model => model.Plugin.Engine.Title)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Plugin.PluginType.Name)
@@ -81,6 +82,13 @@
             }
         </dd>
         <dt class="col-sm-2">
+            @*<dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Free)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Free)
+                </dd>*@
+        <dd class="col-sm-10">
             @if (Model.Plugin.Free == true)
             {
                 <p>Download for Free!</p>
@@ -89,13 +97,6 @@
             {
                 <p>Paid Download.</p>
             }
-            @*<dt class = "col-sm-2">
-                    @Html.DisplayNameFor(model => model.Free)
-                </dt>
-                <dd class = "col-sm-10">
-                    @Html.DisplayFor(model => model.Free)
-                </dd>*@
-        <dd class="col-sm-10">
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Plugin.Webpage)
@@ -105,12 +106,23 @@
         </dd>
     </dl>
 </div>
+<br />
+<br />
 <div>
     <nav aria-label="Version Pagination">
         <ul class="pagination">
             @foreach (var item in Model.Versions)
             {
-                <li class="page-item"><a asp-action="Details" asp-route-id="@Model.Plugin.PluginId" asp-route-version="@item.VersionId" class="page-link">@item.Name</a></li>
+                if (Model.CurrentVersion.VersionId == @item.VersionId)
+                {
+                    <li class="page-item active"><a asp-action="Details" asp-route-id="@Model.Plugin.PluginId" asp-route-version="@item.VersionId" class="page-link">@item.Name</a></li>
+
+                }
+                else
+                {
+                    <li class="page-item"><a asp-action="Details" asp-route-id="@Model.Plugin.PluginId" asp-route-version="@item.VersionId" class="page-link">@item.Name</a></li>
+
+                }
             }
         </ul>
     </nav>

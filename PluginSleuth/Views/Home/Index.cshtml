@@ -5,131 +5,126 @@
 }
 
     <div class="text-center">
-        <h1 class="display-4">Welcome to PluginSleuth!</h1>
-        <H2>The number one source for hard-to-find plugins for many different game design engines.</H2>
-        <div class="card">
-            <div class="card-header">
-                <h3>Search for plugins from the following: </h3>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        @*<tr>*@
-                        @*<th>
-                            @Html.DisplayNameFor(model => model.Engines.First().Title)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Engines.First().Language)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Engines.First().About)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Engines.First().Link)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Engines.First().BannerPath)
-                        </th>
-                        <th></th>*@
-                        @*</tr>*@
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Engines)
-                        {
-                            <tr>
-                                <td>
-                                    <a target="_blank" href=@Html.DisplayFor(modelItem => item.Link)><img class="engine-banner" src=@Html.DisplayFor(modelItem => item.BannerPath) alt=@Html.DisplayFor(modelItem => item.Title)  /></a>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.About)
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+        <div class="jumbotron">
+
+            <h1 class="display-4">Welcome to PluginSleuth!</h1>
+            <br />
+            <h2 class="lead">A searchable repository featuring community driven resources for the following game engines: </h2>
+            <br />
+            <table class="table">
+                <thead>
+                    @*<tr>*@
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.Engines.First().Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Engines.First().Language)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Engines.First().About)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Engines.First().Link)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Engines.First().BannerPath)
+                    </th>
+                    <th></th>*@
+                    @*</tr>*@
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Engines)
+                    {
+                        <tr>
+                            <td>
+                                <a target="_blank" href=@Html.DisplayFor(modelItem => item.Link)><img class="engine-banner" src=@Html.DisplayFor(modelItem => item.BannerPath) alt=@Html.DisplayFor(modelItem => item.Title) /></a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.About)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
             </div>
         </div>
+        <br />
+        <hr />
+        <br />
 
 
+        <h3 class="display-4 text-center">Featured Plugin:</h3>
+        <dl class="row">
+            @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.Title)
+            </dt>*@
+            <dd class="col-sm-10">
+                <h4><a target="_blank" href=@ViewBag.Url>@Html.DisplayFor(model => model.Plugin.Title)</a></h4>
+                @if (Model.Plugin.Free == true)
+                {
+                    <p>(free download)</p>
+                }
+                else
+                {
+                    <p>(paid download)</p>
+                }
+            </dd>
+            @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.About)
+            </dt>*@
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Plugin.About)
+            </dd>
+            @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.User)
+            </dt>*@
+            <dd class="col-sm-10">
+                <h5>By:</h5> @Html.DisplayFor(model => model.Plugin.User.Name)
+            </dd>
+            @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.Engine)
+            </dt>*@
+            <dd class="col-sm-10">
+                <h5>For:</h5> @Html.DisplayFor(model => model.Plugin.Engine.Title)
+            </dd>
+            @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.PluginType.Name)
+            </dt>*@
+            <dd class="col-sm-10">
+                Category: @Html.DisplayFor(model => model.Plugin.PluginType.Name)
+            </dd>
+            @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Plugin.CommercialUse)
+            </dt>*@
+            <dd class="col-sm-10">
+                @if (Model.Plugin.CommercialUse == 0)
+                {
+                    <p>This plugin is unavailable for commercial use.</p>
+                }
+                else if (Model.Plugin.CommercialUse == 1)
+                {
+                    <p>This plugin is available for commercial use for a fee.</p>
+                }
+                else if (Model.Plugin.CommercialUse == 2)
+                {
+                    <p>Please contact the author to inquire about commercial use.</p>
+                }
+                else
+                {
+                    <p>Commercial use for this plugin is free so long as you give credit to the creator.</p>
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @*<dd class="col-sm-10">*@
+                @*<dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Free)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Free)
+                </dd>*@
 
-        <div class="text-center">
-            <div class="card">
-            <h3 class="display-4 card-header">Random Featured Plugin!</h3>
-            <dl class="row card-body">
-                @*<dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Plugin.Title)
-                </dt>*@
-                <dd class="col-sm-10">
-                    <h4><a target="_blank" href=@ViewBag.Url>@Html.DisplayFor(model => model.Plugin.Title)</a></h4>
-                </dd>
-                @*<dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Plugin.About)
-                </dt>*@
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Plugin.About)
-                </dd>
-                @*<dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Plugin.User)
-                </dt>*@
-                <dd class="col-sm-10">
-                    <h5>By:</h5> @Html.DisplayFor(model => model.Plugin.User.Name)
-                </dd>
-                @*<dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Plugin.Engine)
-                </dt>*@
-                <dd class="col-sm-10">
-                    <h5>For:</h5> @Html.DisplayFor(model => model.Plugin.Engine.Title)
-                </dd>
-                @*<dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Plugin.PluginType.Name)
-                </dt>*@
-                <dd class="col-sm-10">
-                    Category: @Html.DisplayFor(model => model.Plugin.PluginType.Name)
-                </dd>
-                @*<dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Plugin.CommercialUse)
-                </dt>*@
-                <dd class="col-sm-10">
-                    @if (Model.Plugin.CommercialUse == 0)
-                    {
-                        <p>Non-Commercial</p>
-                    }
-                    else if (Model.Plugin.CommercialUse == 1)
-                    {
-                        <p>Paid Commercial Use</p>
-                    }
-                    else if (Model.Plugin.CommercialUse == 2)
-                    {
-                        <p>Contact Author to Inquire</p>
-                    }
-                    else
-                    {
-                        <p>Free Commercial Use</p>
-                    }
-                </dd>
-                <dt class="col-sm-2">
-                <dd class="col-sm-10">
-                    @if (Model.Plugin.Free == true)
-                    {
-                        <p>Download for Free!</p>
-                    }
-                    else
-                    {
-                        <p>Paid Download.</p>
-                    }
-                    @*<dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Free)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Free)
-            </dd>*@
-
-                </dd>
+                @*</dd>*@
                 @*<dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Plugin.Webpage)
                 </dt>*@
-                =
-            </dl>
-        </div>
-        </div>
-    </div>
+        </dl>
