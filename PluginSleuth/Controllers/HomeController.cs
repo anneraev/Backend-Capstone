@@ -108,7 +108,7 @@ namespace PluginSleuth.Controllers
                    .Include(p => p.User)
                     .FirstOrDefaultAsync(m => m.PluginId == id);
                 //nullifies plugin if it isn't listed
-                if (plugin.IsListed == false)
+                if (plugin != null && plugin.IsListed == false)
                 {
                         plugin = null;
                 }
