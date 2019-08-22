@@ -13,3 +13,7 @@ Versioning features lets you upload and download plugins by version, each with t
 
 ## Watch List
 Users can add plugins to their watch list, so that they always have a collection of plugins that they are using for easy access. The button to do so is situated at the top of every plugin page.
+
+## Try it!
+
+Plugin Sleuth is not live at the moment. However, if you wish to demo it, you can clone down the file, run it in Microsoft Visual Studio and hit the debug button. This will open up the most recent version of the site. A live, hosted version is coming soon for use by the games developer community.
