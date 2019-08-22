@@ -5,7 +5,7 @@ Working with smaller, less-utilized game engines such as RPG Maker and Game Make
 ## Robust Search Feature
 At the heart of this website is its search feature, which lets the user search by title or keyword and then filter by engine, type and even download cost and usage agreement.
 
-## Uplead Plugins
+## Upload Plugins
 Users can become plugin authors by uploading and maintaining pages for their plugins. By navigating to their MY Plugins list, they can create a tab for new versions of existing plugins, edit delete or unlist a plugiin page, or create a new plugin page. A created and listed plugin page will be searchable by all members, allowing developers to easily find an author's work. An author can add a link directing users to their own site for downloading.
 
 ## Versioning
